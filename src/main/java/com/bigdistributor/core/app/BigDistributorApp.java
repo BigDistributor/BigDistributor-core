@@ -1,6 +1,7 @@
 package com.bigdistributor.core.app;
 
-import com.bigdistributor.plugin.generic.IndexableClass;
+
+import com.bigdistributor.core.generic.IndexableClass;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

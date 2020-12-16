@@ -1,7 +1,7 @@
 package com.bigdistributor.core.app;
 
 
-import com.bigdistributor.plugin.adapters.LoggerManager;
+
 
 /**
  * Class {@code Logger} is the main root of BigDistributor.
@@ -13,7 +13,6 @@ import com.bigdistributor.plugin.adapters.LoggerManager;
  * @see ApplicationMode
  * @since V0.1
  */
-@BigDistributorApp(mode = ApplicationMode.Headless)
 public abstract class BigDistributorMainApp {
 
     public BigDistributorMainApp() {
@@ -23,7 +22,5 @@ public abstract class BigDistributorMainApp {
         initLogger(dist.mode());
     }
 
-    void initLogger(ApplicationMode type) {
-        LoggerManager.initLogger(type);
-    }
+    abstract void initLogger(ApplicationMode type) ;
 }
