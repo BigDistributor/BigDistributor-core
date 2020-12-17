@@ -3,7 +3,7 @@ package com.bigdistributor.biglogger.remote.kafka;
 import java.util.ArrayList;
 import java.util.Collection;
 
-enum KafkaTopic {
+public enum KafkaTopic {
     TASK_ERROR("TASK_ERROR", true),
     TASK_DONE("TASK_DONE", true),
     LOG("TASK_LOG", true);

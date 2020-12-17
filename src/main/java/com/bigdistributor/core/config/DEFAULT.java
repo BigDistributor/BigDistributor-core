@@ -1,4 +1,4 @@
-package net.preibisch.bigdistributor.tools.config;
+package com.bigdistributor.core.config;
 
 public class DEFAULT {
 	public static final String USER_PSEUDO = "mzouink";

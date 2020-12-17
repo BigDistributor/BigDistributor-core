@@ -1,2 +1,4 @@
-package com.bigdistributor.core.config;public class ConfigManager {
+package com.bigdistributor.core.config;
+
+public class ConfigManager {
 }

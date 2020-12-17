@@ -21,4 +21,8 @@ public class Server {
     public String toString() {
         return "Host: " + host + " |Port:" + port;
     }
+
+    public String getFullUrl() {
+        return host + ":" + port;
+    }
 }

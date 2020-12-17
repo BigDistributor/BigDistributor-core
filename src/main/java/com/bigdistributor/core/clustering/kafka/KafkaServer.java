@@ -2,27 +2,21 @@ package com.bigdistributor.core.clustering.kafka;
 
 import com.bigdistributor.core.remote.entities.Server;
 
-public class KafkaServer {
+public class KafkaServer extends Server{
 	public static final int KAFKA_PRODUCER_BUFFER_SIZE = 64 * 1024;
 	public static final int CONNECTION_TIMEOUT = 100000;
-
-	private final Server server;
 
 	private final int bufferSize;
 	private final int connectionTimeout;
 
-	public KafkaServer(Server server){
-		this(server,KAFKA_PRODUCER_BUFFER_SIZE,CONNECTION_TIMEOUT);
+	public KafkaServer(String host, int port){
+		this(host,port,KAFKA_PRODUCER_BUFFER_SIZE,CONNECTION_TIMEOUT);
 	}
 
-	public KafkaServer(Server server, int bufferSize, int connectionTimeout) {
-		this.server = server;
+	public KafkaServer(String host, int port, int bufferSize, int connectionTimeout) {
+		super(host,port);
 		this.bufferSize = bufferSize;
 		this.connectionTimeout = connectionTimeout;
-	}
-
-	public Server getServer() {
-		return server;
 	}
 
 	public int getBufferSize() {

@@ -1,7 +1,11 @@
 package com.bigdistributor.core.app;
 
 
+import com.bigdistributor.biglogger.adapters.LoggerManager;
+import com.bigdistributor.core.generic.InvalidApplicationModeException;
 
+import java.lang.invoke.MethodHandles;
+import java.util.logging.Logger;
 
 /**
  * Class {@code Logger} is the main root of BigDistributor.
@@ -14,13 +18,19 @@ package com.bigdistributor.core.app;
  * @since V0.1
  */
 public abstract class BigDistributorMainApp {
+    private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
 
-    public BigDistributorMainApp() {
-        System.out.println("Main App: " + this.getClass());
+    public BigDistributorMainApp()  {
         BigDistributorApp dist = this.getClass().getAnnotation(BigDistributorApp.class);
-        System.out.println("App Type: " + dist.mode());
+        LOGGER.info("Main App: " + this.getClass() + " Type: " + dist.mode());
         initLogger(dist.mode());
     }
 
-    abstract void initLogger(ApplicationMode type) ;
+    protected void initLogger(ApplicationMode mode) {
+        try {
+            LoggerManager.initLogger(mode);
+        } catch (InvalidApplicationModeException e) {
+            e.printStackTrace();
+        }
+    }
 }

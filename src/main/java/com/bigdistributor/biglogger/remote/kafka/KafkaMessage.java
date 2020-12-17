@@ -1,57 +1,33 @@
-package net.preibisch.bigdistributor.algorithm.clustering.kafka;
+package com.bigdistributor.biglogger.remote.kafka;
+
+import com.google.gson.Gson;
 
 public class KafkaMessage {
-    private String topic;
-    private String jobid;
+    private KafkaTopic topic;
+    private String jobId;
     private long ts;
-	private int blockid;
-	private String log;
+    private int blockId;
+    private String log;
 
-	private KafkaMessage(String topic, String jobid, long ts, int blockid, String log) {
-		super();
-		this.topic = topic;
-		this.jobid = jobid;
-		this.ts = ts;
-		this.blockid = blockid;
-		this.log = log;
-	}
-	
-	public KafkaMessage(String topic, String jobid, int blockid, String log) {
-		super();
-		this.topic = topic;
-		this.jobid = jobid;
-		this.ts = System.currentTimeMillis();
-		this.blockid = blockid;
-		this.log = log;
-	}
+    private KafkaMessage(KafkaTopic topic, String jobId, long ts, int blockId, String log) {
+        super();
+        this.topic = topic;
+        this.jobId = jobId;
+        this.ts = ts;
+        this.blockId = blockId;
+        this.log = log;
+    }
 
-	public KafkaMessage(String topic, String jobid,String message) {
-		this.topic = topic;
-		this.jobid = jobid;
-		String[] parts = message.split(";");
-		ts = Long.valueOf(parts[0]);
-		blockid = Integer.valueOf(parts[1]);
-		log = parts[2];
-	}
+    public KafkaMessage(KafkaTopic topic, String jobId, int blockId, String log) {
+        this(topic, jobId, System.currentTimeMillis(), blockId, log);
+    }
 
-	public long getTimestamp() {
-		return ts;
-	}
-	
-	public String getTopic() {
-		return topic;
-	}
-	public String getJobid() {
-		return jobid;
-	}
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("%d;%d;%s",ts, blockid,log);
-	}
-
-	public static void main(String[] args) {
-		KafkaMessage message = new KafkaMessage(net.preibisch.bigdistributor.algorithm.clustering.kafka.KafkaTopics.TOPIC_DONE_TASK,"0","1565260449612;9;Task finished 9");
-		System.out.println(message);
-	}
+    public static KafkaMessage fromString(String json) {
+        return new Gson().fromJson(json, KafkaMessage.class);
+    }
 }
