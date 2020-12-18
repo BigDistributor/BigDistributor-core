@@ -1,4 +1,4 @@
-package com.bigdistributor.biglogger.remote.kafka;
+package com.bigdistributor.core.remote.kafka;
 
 import com.bigdistributor.core.clustering.kafka.KafkaServer;
 import kafka.utils.ShutdownableThread;

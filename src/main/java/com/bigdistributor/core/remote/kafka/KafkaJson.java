@@ -1,4 +1,4 @@
-package com.bigdistributor.biglogger.remote.kafka;
+package com.bigdistributor.core.remote.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;

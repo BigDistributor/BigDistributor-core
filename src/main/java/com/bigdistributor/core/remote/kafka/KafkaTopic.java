@@ -1,8 +1,15 @@
-package com.bigdistributor.biglogger.remote.kafka;
+package com.bigdistributor.core.remote.kafka;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+
+/**
+ * In order to manage distribute processing, we will have 3 main topics for remote message
+ * Task Done: topic to accumulate information when block task is done.
+ * Task Error: We get it if we have any exception in the execution node.
+ * Log : any log message or print made in the node.
+ */
 public enum KafkaTopic {
     TASK_ERROR("TASK_ERROR", true),
     TASK_DONE("TASK_DONE", true),

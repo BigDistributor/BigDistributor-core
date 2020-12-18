@@ -1,7 +1,7 @@
 package com.bigdistributor.biglogger.kafka;
 
-import com.bigdistributor.biglogger.remote.kafka.KafkaMessage;
-import com.bigdistributor.biglogger.remote.kafka.KafkaTopic;
+import com.bigdistributor.core.remote.kafka.KafkaMessage;
+import com.bigdistributor.core.remote.kafka.KafkaTopic;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.junit.Assert;
 import org.junit.Test;

@@ -34,9 +34,6 @@ public class KafkaServer extends Server{
 //	public static final String CLIENT_ID = "mzouink";
 //	public static String jobId = "0";
 //
-//	public static void setURL(String url) {
-//		KAFKA_SERVER_URL = url;
-//	}
 //
 //	public static String getUrls() {
 //		String[] str = new String[PORTS.length] ;

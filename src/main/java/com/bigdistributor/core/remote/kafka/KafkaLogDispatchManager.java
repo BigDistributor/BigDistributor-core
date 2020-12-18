@@ -1,6 +1,6 @@
-package com.bigdistributor.biglogger.remote.kafka;
+package com.bigdistributor.core.remote.kafka;
 
-import com.bigdistributor.biglogger.remote.RemoteLogListener;
+import com.bigdistributor.core.remote.generic.RemoteLogListener;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
