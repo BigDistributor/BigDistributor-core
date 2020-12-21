@@ -1,6 +1,6 @@
-package com.bigdistributor.core.remote.generic;
+package com.bigdistributor.core.remote.mq.entities;
 
-import com.bigdistributor.core.remote.mq.entities.KafkaMessage;
+import com.bigdistributor.core.remote.mq.MQLogReceiveDispatchManager;
 
 
 /**
@@ -9,8 +9,8 @@ import com.bigdistributor.core.remote.mq.entities.KafkaMessage;
  * Can be used by GUI, Add to DB ...
  *
  * @author Marwan Zouinkhi
- * @see com.bigdistributor.core.remote.mq.kafka.KafkaLogDispatchManager
+ * @see MQLogReceiveDispatchManager
  */
 public interface RemoteLogListener {
-    void onLogAdded(KafkaMessage message);
+    void onLogAdded(MQMessage message);
 }

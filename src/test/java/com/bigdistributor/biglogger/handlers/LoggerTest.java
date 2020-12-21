@@ -18,7 +18,7 @@ public class LoggerTest {
 
     @Test
     public void testLoggerManager() throws InvalidApplicationModeException {
-        LoggerManager.initLogger(ApplicationMode.Headless);
+        LoggerManager.initLogger(ApplicationMode.OneNodeHeadless);
     }
 
     @Test(expected = InvalidApplicationModeException.class)

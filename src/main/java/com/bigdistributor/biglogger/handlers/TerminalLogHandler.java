@@ -8,7 +8,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-@LogHandler(format = "terminal", modes = {ApplicationMode.Headless, ApplicationMode.Fiji})
+@LogHandler(format = "terminal", modes = {ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
 public class TerminalLogHandler extends Handler {
     public TerminalLogHandler() {
         System.out.println("Terminal Log Handler initiated..");

@@ -8,5 +8,5 @@ package com.bigdistributor.core.app;
  * Cloud: in cloud server
  */
 public enum ApplicationMode {
-    Fiji, Headless, Cluster, Cloud
+    OneNodeFiji, DistributionMasterFiji, OneNodeHeadless, DistributionMaster, ExecutionNode
 }

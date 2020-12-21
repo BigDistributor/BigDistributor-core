@@ -3,6 +3,7 @@ package com.bigdistributor.biglogger.handlers;
 import kafka.utils.ShutdownableThread;
 import org.apache.log4j.Logger;
 //TODO fix this and change to MQ receiver that communicate with MQLogReceiveDispatchManager
+// Communicate with MQLogReceiveDispatchManager
 public class MQLogReceiveHandler extends ShutdownableThread {
     private static final long TIME_OUT = 10000;
 

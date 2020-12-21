@@ -1,7 +1,7 @@
 package com.bigdistributor.biglogger.handlers;
 
-import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.biglogger.generic.LogHandler;
+import com.bigdistributor.core.app.ApplicationMode;
 import org.apache.log4j.BasicConfigurator;
 import org.scijava.Context;
 import org.scijava.log.LogService;
@@ -9,7 +9,7 @@ import org.scijava.log.LogService;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-@LogHandler(format = "fiji", modes = {ApplicationMode.Fiji})
+@LogHandler(format = "fiji", modes = {ApplicationMode.DistributionMasterFiji, ApplicationMode.OneNodeFiji})
 public class FijiLogHandler extends Handler {
     public FijiLogHandler() {
         System.out.println("Fiji Log Handler initiated..");
