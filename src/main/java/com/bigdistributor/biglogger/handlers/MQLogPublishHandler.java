@@ -1,8 +1,8 @@
 package com.bigdistributor.biglogger.handlers;
 
 
-import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.biglogger.generic.LogHandler;
+import com.bigdistributor.core.app.ApplicationMode;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -13,9 +13,10 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
-@LogHandler(format = "kafka", modes = {ApplicationMode.Cloud, ApplicationMode.Cluster})
-public class KafkaLogHandler extends Handler {
-    public KafkaLogHandler() {
+//TODO change to MQ
+@LogHandler(format = "MQ", modes = {ApplicationMode.ExecutionNode})
+public class MQLogPublishHandler extends Handler {
+    public MQLogPublishHandler() {
         System.out.println("Kafka Log Handler initiated..");
     }
 
@@ -72,7 +73,6 @@ public class KafkaLogHandler extends Handler {
     public void flush() {
     }
 
-
     @Override
     public void close() {
         if (this.producer != null) {
@@ -85,7 +85,6 @@ public class KafkaLogHandler extends Handler {
         }
     }
 
-
     public void setServers(final String servers) {
         this.servers = servers;
     }
@@ -93,6 +92,4 @@ public class KafkaLogHandler extends Handler {
     public void setTopic(final String topic) {
         this.topic = topic;
     }
-
-
 }

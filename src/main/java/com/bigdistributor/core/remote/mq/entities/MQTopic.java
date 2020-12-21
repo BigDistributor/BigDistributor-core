@@ -1,4 +1,4 @@
-package com.bigdistributor.core.remote.kafka;
+package com.bigdistributor.core.remote.mq.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,15 +10,16 @@ import java.util.Collection;
  * Task Error: We get it if we have any exception in the execution node.
  * Log : any log message or print made in the node.
  */
-public enum KafkaTopic {
+public enum MQTopic {
     TASK_ERROR("TASK_ERROR", true),
     TASK_DONE("TASK_DONE", true),
-    LOG("TASK_LOG", true);
+    LOG("TASK_LOG", true),
+    TEST("test", false);
 
     private final String topicString;
     private final boolean important;
 
-    KafkaTopic(String topicString, boolean important) {
+    MQTopic(String topicString, boolean important) {
         this.topicString = topicString;
         this.important = important;
     }
@@ -31,8 +32,8 @@ public enum KafkaTopic {
         return important;
     }
 
-    public static KafkaTopic fromString(String topicString) {
-        for (KafkaTopic topic : KafkaTopic.values())
+    public static MQTopic fromString(String topicString) {
+        for (MQTopic topic : MQTopic.values())
             if (topic.getTopicString().equalsIgnoreCase(topicString))
                 return topic;
         return null;
@@ -41,7 +42,7 @@ public enum KafkaTopic {
 
     public static Collection<String> getTopics() {
         Collection<String> list = new ArrayList<>();
-        for (KafkaTopic topic : KafkaTopic.values())
+        for (MQTopic topic : MQTopic.values())
             list.add(topic.getTopicString());
         return list;
     }
