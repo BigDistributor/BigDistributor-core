@@ -1,32 +1,28 @@
 package com.bigdistributor.biglogger.adapters;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
-public class Log {
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-    private static final Logger logger = Logger.getLogger(Log.class);
+public class Log extends Logger {
 
-    static {
-        logger.setLevel(Level.ALL);
+    protected Log(String name) {
+        super(name, null);
     }
 
-    public static void info(String string) {
-    	System.out.println(string);
-        if (logger.isInfoEnabled()) {
-            logger.info(string);
-        }
+    public static Log getLogger(String name){
+        return new Log(name);
     }
 
-    public static void debug(String string) {
-    	System.out.println(string);
-        if (logger.isDebugEnabled()) {
-            logger.debug(string);
-        }
+    public void info(String string) {
+    	log(Level.INFO,string);
     }
 
-    public static void error(String string) {
-    	System.out.println(string);
-        logger.error(string);
+    public void debug(String string) {
+        log(Level.FINE,string);
+    }
+
+    public void error(String string) {
+        log(Level.SEVERE,string);
     }
 }

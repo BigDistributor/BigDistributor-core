@@ -2,7 +2,8 @@ package com.bigdistributor.core.config;
 
 public enum PropertiesKeys {
     Version("config.version", 1.0),
-    MQServer("mq.server", "");
+    MQServer("mq.server.host", "ec2-3-91-12-31.compute-1.amazonaws.com"),
+    MQServerPort("mq.server.port", 5672);
 
     private final String key;
     private final Object defaultValue;
@@ -18,5 +19,15 @@ public enum PropertiesKeys {
 
     public Object getDefaultValue() {
         return defaultValue;
+    }
+
+    public Object objectOf(String s) {
+        if (defaultValue.getClass().isInstance(Double.class))
+            return Double.valueOf(s);
+        else if (defaultValue.getClass().isInstance(Integer.class))
+            return Integer.valueOf(s);
+        else
+            return s;
+
     }
 }

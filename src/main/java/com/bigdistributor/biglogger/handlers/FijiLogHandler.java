@@ -2,7 +2,7 @@ package com.bigdistributor.biglogger.handlers;
 
 import com.bigdistributor.biglogger.generic.LogHandler;
 import com.bigdistributor.core.app.ApplicationMode;
-import org.apache.log4j.BasicConfigurator;
+
 import org.scijava.Context;
 import org.scijava.log.LogService;
 
@@ -21,7 +21,6 @@ public class FijiLogHandler extends Handler {
 
     public static void initLogger() {
         if (initialized) return;
-        BasicConfigurator.configure();
         final Context context = new Context(LogService.class);
         logService = context.getService(LogService.class);
         initialized = true;

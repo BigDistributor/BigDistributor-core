@@ -1,22 +1,21 @@
 package com.bigdistributor.core.remote.mq;
 
+import com.bigdistributor.biglogger.adapters.Log;
 import com.bigdistributor.core.remote.mq.entities.MQMessage;
 import com.bigdistributor.core.remote.mq.entities.RemoteLogListener;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MQLogReceiveDispatchManager {
-    static Logger logger = Logger.getLogger(MQLogReceiveDispatchManager.class.getClass());
+    private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
     private static List<RemoteLogListener> listeners = new ArrayList<>();
     private static List<MQMessage> msgs = new ArrayList<>();
 
     public static void addLog(String log) {
         MQMessage message = MQMessage.fromString(log);
         msgs.add(message);
-        logger.log(Level.DEBUG, "New msg: " + message);
         notifyListeners(message);
     }
 

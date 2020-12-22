@@ -1,7 +1,7 @@
 package com.bigdistributor.biglogger.handlers;
 
-import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.biglogger.generic.LogHandler;
+import com.bigdistributor.core.app.ApplicationMode;
 
 import java.util.Date;
 import java.util.logging.Formatter;
@@ -10,6 +10,7 @@ import java.util.logging.LogRecord;
 
 @LogHandler(format = "terminal", modes = {ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
 public class TerminalLogHandler extends Handler {
+
     public TerminalLogHandler() {
         System.out.println("Terminal Log Handler initiated..");
     }

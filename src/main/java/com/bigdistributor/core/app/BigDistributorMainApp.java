@@ -2,6 +2,7 @@ package com.bigdistributor.core.app;
 
 
 import com.bigdistributor.biglogger.adapters.LoggerManager;
+import com.bigdistributor.core.config.ConfigManager;
 import com.bigdistributor.core.generic.InvalidApplicationModeException;
 
 import java.lang.invoke.MethodHandles;
@@ -18,12 +19,13 @@ import java.util.logging.Logger;
  * @since V0.1
  */
 public abstract class BigDistributorMainApp {
-    private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
     public BigDistributorMainApp()  {
         BigDistributorApp dist = this.getClass().getAnnotation(BigDistributorApp.class);
-        LOGGER.info("Main App: " + this.getClass() + " Type: " + dist.mode());
         initLogger(dist.mode());
+        logger.info("Main App: " + this.getClass() + " Type: " + dist.mode());
+        ConfigManager.init();
     }
 
     protected void initLogger(ApplicationMode mode) {
