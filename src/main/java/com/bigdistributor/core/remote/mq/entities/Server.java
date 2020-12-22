@@ -1,4 +1,4 @@
-package com.bigdistributor.core.remote.entities;
+package com.bigdistributor.core.remote.mq.entities;
 
 public class Server {
     private final String host;
