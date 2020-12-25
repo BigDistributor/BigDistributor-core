@@ -26,5 +26,6 @@ public class Get {
         };
         channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
 
+        System.out.println("out");
     }
 }

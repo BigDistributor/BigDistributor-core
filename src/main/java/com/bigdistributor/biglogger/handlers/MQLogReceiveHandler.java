@@ -1,20 +1,44 @@
 //package com.bigdistributor.biglogger.handlers;
 //
-//import kafka.utils.ShutdownableThread;
-//import org.apache.log4j.Logger;
+//
+//import com.bigdistributor.biglogger.generic.LogHandler;
+//import com.bigdistributor.core.app.ApplicationMode;
+//
+//import java.util.logging.Handler;
+//import java.util.logging.LogRecord;
+//
 ////TODO fix this and change to MQ receiver that communicate with MQLogReceiveDispatchManager
 //// Communicate with MQLogReceiveDispatchManager
-//public class MQLogReceiveHandler extends ShutdownableThread {
+//@LogHandler(format = "MQ", modes = {ApplicationMode.DistributionMaster,ApplicationMode.DistributionMasterFiji})
+//public class MQLogReceiveHandler extends Handler {
+//
 //    private static final long TIME_OUT = 10000;
 //
-//    static Logger logger = Logger.getLogger(MQLogReceiveHandler.class.getClass());
+////    static Logger logger = Logger.getLogger(MQLogReceiveHandler.class.getClass());
 //
 //    public MQLogReceiveHandler() {
-//        super("KafkaJobConsumer", false);
+//        Thread thread = new Thread(() -> {
+//
+//        })
 ////        logger.setLevel(Level.ERROR);
 ////        Properties props = new Properties();
 ////        props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer.getFullUrl());
 ////        consumer = new KafkaConsumer<>(props, new StringDeserializer(), new StringDeserializer());
+//    }
+//
+//    @Override
+//    public void publish(LogRecord record) {
+//
+//    }
+//
+//    @Override
+//    public void flush() {
+//
+//    }
+//
+//    @Override
+//    public void close() throws SecurityException {
+//
 //    }
 //
 //    @Override

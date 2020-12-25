@@ -36,6 +36,10 @@ public class ConfigManager {
         }
     }
 
+    public static Map<PropertiesKeys, Object> getConfig() {
+        return config;
+    }
+
     private static void saveConfig(Properties prop, File f) throws IOException {
         OutputStream output = new FileOutputStream(f);
         prop.store(output, null);

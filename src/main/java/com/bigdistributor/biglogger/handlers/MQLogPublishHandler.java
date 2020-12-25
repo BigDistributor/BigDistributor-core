@@ -1,95 +1,107 @@
-//package com.bigdistributor.biglogger.handlers;
-//
-//
-//import com.bigdistributor.biglogger.generic.LogHandler;
-//import com.bigdistributor.core.app.ApplicationMode;
-//import org.apache.kafka.clients.producer.KafkaProducer;
-//import org.apache.kafka.clients.producer.Producer;
-//import org.apache.kafka.clients.producer.ProducerRecord;
-//
-//import java.util.Properties;
-//import java.util.logging.Formatter;
-//import java.util.logging.Handler;
-//import java.util.logging.LogRecord;
-//import java.util.logging.SimpleFormatter;
-//
-////TODO change to MQ
-//@LogHandler(format = "MQ", modes = {ApplicationMode.ExecutionNode})
-//public class MQLogPublishHandler extends Handler {
-//    public MQLogPublishHandler() {
-//        System.out.println("Kafka Log Handler initiated..");
-//    }
-//
-//    private String servers;
-//
-//    private String topic;
-//
-//    private Producer<String, String> producer = null;
-//
-//    private boolean init = false;
-//
-//    private static final Formatter defaultFormatter = new SimpleFormatter();
-//
-//    @Override
-//    public void publish(final LogRecord record) {
-//        if (ensureReady()) {
-//            try {
-//                final String msg;
-//                if (getFormatter() == null) {
-//                    msg = this.defaultFormatter.format(record);
-//                } else {
-//                    msg = getFormatter().format(record);
-//                }
-//                this.producer.send(new ProducerRecord<String, String>(this.topic, msg));
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//    }
-//
-//
-//    private synchronized boolean ensureReady() {
-//        if (!init && this.producer == null) {
-//            try {
-//
-//                final Properties props = new Properties();
-//                props.put("bootstrap.servers", this.servers);
-//                props.put("acks", "all");
-//                props.put("retries", 0);
-//                props.put("key.serializer", org.apache.kafka.common.serialization.StringSerializer.class);
-//                props.put("value.serializer", org.apache.kafka.common.serialization.StringSerializer.class);
-//
-//                this.producer = new KafkaProducer<String, String>(props);
-//            } catch (Throwable ex) {
-//                ex.printStackTrace();
-//            }
-//            init = true;
-//        }
-//
-//        return this.producer != null;
-//    }
-//
-//    @Override
-//    public void flush() {
-//    }
-//
-//    @Override
-//    public void close() {
-//        if (this.producer != null) {
-//            try {
-//                this.producer.close();
-//                this.producer = null;
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void setServers(final String servers) {
-//        this.servers = servers;
-//    }
-//
-//    public void setTopic(final String topic) {
-//        this.topic = topic;
-//    }
-//}
+package com.bigdistributor.biglogger.handlers;
+
+
+import com.bigdistributor.biglogger.generic.LogHandler;
+import com.bigdistributor.core.app.ApplicationMode;
+import com.bigdistributor.core.config.ConfigManager;
+import com.bigdistributor.core.config.PropertiesKeys;
+import com.bigdistributor.core.remote.mq.entities.MQMessage;
+import com.bigdistributor.core.remote.mq.entities.MQTopic;
+import com.bigdistributor.core.remote.mq.entities.Server;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+//TODO change to MQ
+@LogHandler(format = "MQ", modes = {ApplicationMode.ExecutionNode})
+public class MQLogPublishHandler extends Handler {
+    private static Channel channel;
+
+    private boolean init = false;
+
+    public MQLogPublishHandler() {
+        System.out.println("Kafka Log Handler initiated..");
+        ensureReady();
+    }
+
+    private String server;
+
+
+    @Override
+    public void publish(final LogRecord record) {
+        if (ensureReady()) {
+            try {
+                MQMessage message = new MQMessage(MQTopic.LOG, "0", 0, record.getMessage());
+                channel.basicPublish("", Server.QUEUE, null, message.toString().getBytes());
+                System.out.println(" [x] Sent '" + message + "'");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+
+    private synchronized boolean ensureReady() {
+        if (!init && this.channel == null)
+            initChannel();
+
+        return this.channel != null;
+    }
+
+    private void initChannel() {
+
+        if (this.server == null) {
+            server = initServer();
+        }
+        String server = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQServer));
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(server);
+        try (Connection connection = factory.newConnection()) {
+            channel = connection.createChannel();
+            channel.queueDeclare(Server.QUEUE, false, true, false, null);
+            MQMessage message = new MQMessage(MQTopic.LOG, "0", 0, "Connected");
+            channel.basicPublish("", Server.QUEUE, null, message.toString().getBytes());
+            System.out.println(" [x] Sent '" + message + "'");
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        init = true;
+
+    }
+
+    private String initServer() {
+        String host = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQServer));
+        return host;
+    }
+
+    @Override
+    public void flush() {
+    }
+
+    @Override
+    public void close() {
+        if (this.channel != null) {
+            try {
+                this.channel.close();
+                this.channel = null;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void setServers(final String servers) {
+        this.server = servers;
+        initChannel();
+    }
+
+}

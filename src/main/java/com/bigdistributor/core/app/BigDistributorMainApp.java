@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.logging.Logger;
 
 /**
- * Class {@code Logger} is the main root of BigDistributor.
+ * Class {@code BigDistributorMainApp} is the main root of BigDistributor.
  * Any Main app will need to extends from this class
  * App have 4 modes: Fiji, Headless, Cluster, Cloud
  * And based on mode the LogHandler will be initiated
@@ -18,14 +18,15 @@ import java.util.logging.Logger;
  * @see ApplicationMode
  * @since V0.1
  */
+
 public abstract class BigDistributorMainApp {
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
     public BigDistributorMainApp()  {
         BigDistributorApp dist = this.getClass().getAnnotation(BigDistributorApp.class);
+        ConfigManager.init();
         initLogger(dist.mode());
         logger.info("Main App: " + this.getClass() + " Type: " + dist.mode());
-        ConfigManager.init();
     }
 
     protected void initLogger(ApplicationMode mode) {
