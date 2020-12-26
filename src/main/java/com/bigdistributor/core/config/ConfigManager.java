@@ -12,16 +12,15 @@ import java.util.Properties;
 public class ConfigManager {
 
     private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
-    private final static String CONFIG_FILE = "bigdistributor.properties";
+    private final static String CONFIG_FILE = "com.bigdistributor.tasks.bigdistributor.properties";
     private static Map<PropertiesKeys, Object> config;
 
     public static void init() {
-
         logger.info("Init App Config..");
         try {
             File f = new File(ConfigManager.class.getResource("/").getPath(), CONFIG_FILE);
             if (f.exists()) {
-                logger.info("Log Config: "+f.getAbsolutePath());
+                logger.info("Log Config: " + f.getAbsolutePath());
                 config = loadConfig(f);
             } else {
                 logger.info("Create Config..");
@@ -61,26 +60,18 @@ public class ConfigManager {
             String value = appProps.getProperty(key);
             System.out.println(key + " : " + value);
             try {
-                PropertiesKeys propKey = getPropForKey(key);
+                PropertiesKeys propKey = PropertiesKeys.getPropForKey(key);
                 Object propValue = propKey.objectOf(value);
                 appConfig.put(propKey, propValue);
 
             } catch (IllegalArgumentException e) {
                 logger.error("Invalid property not found : " + key + " -> " + value);
             } catch (ClassCastException e) {
-                logger.error("Invalid value for property : " + key + " -> " + value + getPropForKey(key).getDefaultValue().getClass());
+                logger.error("Invalid value for property : " + key + " -> " + value + PropertiesKeys.getPropForKey(key).getDefaultValue().getClass());
                 appConfig.put(PropertiesKeys.valueOf(key), PropertiesKeys.valueOf(key).getDefaultValue());
             }
         }
         return appConfig;
-    }
-
-    private static PropertiesKeys getPropForKey(String key) {
-        for( PropertiesKeys p: PropertiesKeys.values()){
-            if (p.getKey().equalsIgnoreCase(key))
-                return p;
-        }
-        throw new IllegalArgumentException();
     }
 
     private static Properties createConfig() {

@@ -1,8 +1,8 @@
-//package com.bigdistributor.biglogger.handlers;
+//package com.com.bigdistributor.tasks.bigdistributor.biglogger.handlers;
 //
 //
-//import com.bigdistributor.biglogger.generic.LogHandler;
-//import com.bigdistributor.core.app.ApplicationMode;
+//import com.com.bigdistributor.tasks.bigdistributor.biglogger.generic.LogHandler;
+//import com.com.bigdistributor.tasks.bigdistributor.core.app.ApplicationMode;
 //
 //import java.util.logging.Handler;
 //import java.util.logging.LogRecord;

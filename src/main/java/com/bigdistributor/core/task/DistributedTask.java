@@ -1,11 +1,11 @@
-//package com.bigdistributor.core.task;
+//package com.com.bigdistributor.tasks.bigdistributor.core.task;
 //
 //import com.google.gson.JsonIOException;
 //import com.google.gson.JsonSyntaxException;
-//import net.preibisch.bigdistributor.algorithm.clustering.kafka.KafkaManager;
-//import net.preibisch.bigdistributor.algorithm.clustering.scripting.JobType;
-//import net.preibisch.bigdistributor.algorithm.controllers.items.Metadata;
-//import net.preibisch.bigdistributor.io.img.n5.N5File;
+//import net.preibisch.com.bigdistributor.tasks.bigdistributor.algorithm.clustering.kafka.KafkaManager;
+//import net.preibisch.com.bigdistributor.tasks.bigdistributor.algorithm.clustering.scripting.JobType;
+//import net.preibisch.com.bigdistributor.tasks.bigdistributor.algorithm.controllers.items.Metadata;
+//import net.preibisch.com.bigdistributor.tasks.bigdistributor.io.img.n5.N5File;
 //import picocli.CommandLine.Option;
 //
 //import java.io.IOException;

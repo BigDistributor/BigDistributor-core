@@ -1,7 +1,7 @@
 package com.bigdistributor.core.remote.mq.entities;
 
 public class Server {
-    public static String QUEUE = "bigdistributor";
+    public static String QUEUE = "com.bigdistributor.tasks.bigdistributor";
     private final String host;
     private final int port;
 

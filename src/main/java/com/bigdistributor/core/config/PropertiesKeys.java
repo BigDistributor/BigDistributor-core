@@ -28,6 +28,13 @@ public enum PropertiesKeys {
             return Integer.valueOf(s);
         else
             return s;
+    }
 
+    public static PropertiesKeys getPropForKey(String key) {
+        for( PropertiesKeys p: PropertiesKeys.values()){
+            if (p.getKey().equalsIgnoreCase(key))
+                return p;
+        }
+        throw new IllegalArgumentException();
     }
 }
