@@ -15,6 +15,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 //TODO change to MQ
@@ -31,19 +32,21 @@ public class MQLogPublishHandler extends Handler {
 
     private String server;
 
-
     @Override
     public void publish(final LogRecord record) {
         if (ensureReady()) {
             try {
-                MQMessage message = new MQMessage(MQTopic.LOG, "0", 0, record.getMessage());
-                channel.basicPublish("", Server.QUEUE, null, message.toString().getBytes());
+                String message;
+                if (record.getLevel() == Level.CONFIG) {
+                    message = record.getMessage();
+                } else {
+                    message = new MQMessage(MQTopic.LOG, "0", 0, record.getMessage()).toString();
+                }
+                channel.basicPublish("", Server.QUEUE, null, message.getBytes());
                 System.out.println(" [x] Sent '" + message + "'");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 

@@ -8,67 +8,60 @@ import net.imglib2.Interval;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 public class Metadata {
-	private String jobID;
-	private String input;
-	private String output;
-	private Interval bb;
-	private long[] blocksize;
-	private Map<Integer, BasicBlockInfo> blocksInfo;
+    private Integer totalBlocks;
+    private Interval bb;
+    private long[] blocksize;
+    private List<BasicBlockInfo> blocksInfo;
 
-	
-	public Metadata(String jobID, String input, String output,Interval bb, long[] blocksize,
-			Map<Integer, BasicBlockInfo> blocksInfo) {
-		super();
-		this.bb = bb;
-		this.jobID = jobID;
-		this.input = input;
-		this.output = output;
-		this.blocksize = blocksize;
-		this.blocksInfo = blocksInfo;
-	}
 
-	public Interval getBb() {
-		return bb;
-	}
-	
-	public String getJobID() {
-		return jobID;
-	}
+    public Metadata(Interval bb, long[] blocksize,
+                    List<BasicBlockInfo> blocksInfo) {
+        this(blocksInfo.size(), bb, blocksize, blocksInfo);
+    }
 
-	public String getInput() {
-		return input;
-	}
+    public Metadata(Integer totalBlocks, Interval bb, long[] blocksize,
+                    List<BasicBlockInfo> blocksInfo) {
+        super();
+        this.bb = bb;
+        this.totalBlocks = totalBlocks;
+        this.blocksize = blocksize;
+        this.blocksInfo = blocksInfo;
+    }
 
-	public String getOutput() {
-		return output;
-	}
+    public Interval getBb() {
+        return bb;
+    }
 
-	public long[] getBlocksize() {
-		return blocksize;
-	}
+    public long[] getBlocksize() {
+        return blocksize;
+    }
 
-	public Map<Integer, BasicBlockInfo> getBlocksInfo() {
-		return blocksInfo;
-	}
+    public List<BasicBlockInfo> getBlocksInfo() {
+        return blocksInfo;
+    }
 
-	public int size() {
-		return blocksInfo.size();
-	}
+    public Integer getTotalBlocks() {
+        return totalBlocks;
+    }
 
-	@Override
-	public String toString() {
-		return GsonIO.toString(this);
-	}
+    public int size() {
+        return blocksInfo.size();
+    }
 
-	public void toJson(String path) throws IOException {
-		GsonIO.toJson(this, path);
-	}
-	
-	
-	public static Metadata fromJson(String path) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
-		return GsonIO.fromJson(path, Metadata.class);
-	}
+    @Override
+    public String toString() {
+        return GsonIO.toString(this);
+    }
+
+    public void toJson(String path) throws IOException {
+        GsonIO.toJson(this, path);
+    }
+
+
+    public static Metadata fromJson(String path) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+        return GsonIO.fromJson(path, Metadata.class);
+    }
 }

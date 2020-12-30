@@ -12,9 +12,9 @@ import java.util.Collection;
  */
 public enum MQTopic {
     TASK_ERROR("TASK_ERROR", true),
+    TASK_STARTED("TASK_STARTED", true),
     TASK_DONE("TASK_DONE", true),
-    LOG("TASK_LOG", true),
-    TEST("test", false);
+    LOG("TASK_LOG", true);
 
     private final String topicString;
     private final boolean important;

@@ -1,17 +1,17 @@
-//package com.com.bigdistributor.tasks.bigdistributor.core.task;
+//package com.bigdistributor.core.task.items;
 //
+//import com.bigdistributor.core.task.BlockTask;
 //import com.google.gson.JsonIOException;
 //import com.google.gson.JsonSyntaxException;
 //import net.preibisch.com.bigdistributor.tasks.bigdistributor.algorithm.clustering.kafka.KafkaManager;
 //import net.preibisch.com.bigdistributor.tasks.bigdistributor.algorithm.clustering.scripting.JobType;
-//import net.preibisch.com.bigdistributor.tasks.bigdistributor.algorithm.controllers.items.Metadata;
 //import net.preibisch.com.bigdistributor.tasks.bigdistributor.io.img.n5.N5File;
 //import picocli.CommandLine.Option;
 //
 //import java.io.IOException;
 //import java.util.concurrent.Callable;
 //
-//public class DistributedTask implements Callable<Void> {
+//public class ClusterDistributedTask implements Callable<Void> {
 //	@Option(names = { "-t", "--task" }, required = true, description = "The path of the Data")
 //	private String task;
 //
