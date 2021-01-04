@@ -20,12 +20,12 @@
  * <http://www.gnu.org/licenses/gpl-2.0.html>.
  * #L%
  */
-package com.bigdistributor.controllers.blockmanagement.block;
+package com.bigdistributor.core.blockmanagement.block;
 
 import com.bigdistributor.biglogger.adapters.Log;
-import com.bigdistributor.controllers.blockmanagement.blockinfo.BasicBlockInfo;
-import com.bigdistributor.controllers.blockmanagement.blockinfo.ComplexBlockInfo;
-import com.bigdistributor.controllers.blockmanagement.multithreading.ImagePortion;
+import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
+import com.bigdistributor.core.blockmanagement.blockinfo.ComplexBlockInfo;
+import com.bigdistributor.core.blockmanagement.multithreading.ImagePortion;
 import net.imglib2.*;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.FloatArray;

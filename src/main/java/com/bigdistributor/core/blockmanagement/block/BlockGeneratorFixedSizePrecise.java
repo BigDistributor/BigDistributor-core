@@ -20,7 +20,7 @@
  * <http://www.gnu.org/licenses/gpl-2.0.html>.
  * #L%
  */
-package com.bigdistributor.controllers.blockmanagement.block;
+package com.bigdistributor.core.blockmanagement.block;
 
 import com.bigdistributor.biglogger.adapters.Log;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;

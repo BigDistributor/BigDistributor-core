@@ -1,6 +1,6 @@
 package com.bigdistributor.core.task.items;
 
-import com.bigdistributor.controllers.blockmanagement.blockinfo.BasicBlockInfo;
+import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
 import com.bigdistributor.io.GsonIO;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;

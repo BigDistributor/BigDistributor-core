@@ -1,4 +1,4 @@
-package com.bigdistributor.controllers.blockmanagement.blockinfo;
+package com.bigdistributor.core.blockmanagement.blockinfo;
 
 public class ComplexBlockInfo extends BasicBlockInfo {
 

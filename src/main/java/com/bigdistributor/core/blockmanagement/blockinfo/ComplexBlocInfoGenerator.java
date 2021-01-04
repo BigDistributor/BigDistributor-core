@@ -1,6 +1,6 @@
-package com.bigdistributor.controllers.blockmanagement.blockinfo;
+package com.bigdistributor.core.blockmanagement.blockinfo;
 
-import com.bigdistributor.controllers.blockmanagement.block.BlockFunctions;
+import com.bigdistributor.core.blockmanagement.block.BlockFunctions;
 import com.bigdistributor.core.tools.ArrayHelpers;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;
 import net.imglib2.util.Util;

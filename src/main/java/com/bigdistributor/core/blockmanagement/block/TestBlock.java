@@ -1,6 +1,6 @@
-package com.bigdistributor.controllers.blockmanagement.block;
+package com.bigdistributor.core.blockmanagement.block;
 
-import com.bigdistributor.controllers.blockmanagement.multithreading.Threads;
+import com.bigdistributor.core.blockmanagement.multithreading.Threads;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.display.imagej.ImageJFunctions;

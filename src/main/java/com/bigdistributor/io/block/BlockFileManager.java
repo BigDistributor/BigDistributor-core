@@ -1,8 +1,8 @@
 package com.bigdistributor.io.block;
 
 import com.bigdistributor.biglogger.adapters.Log;
-import com.bigdistributor.controllers.blockmanagement.block.Block;
-import com.bigdistributor.controllers.blockmanagement.blockinfo.BasicBlockInfo;
+import com.bigdistributor.core.blockmanagement.block.Block;
+import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
 import com.bigdistributor.io.DataExtension;
 import com.bigdistributor.io.IOTools;
 import net.imglib2.Cursor;

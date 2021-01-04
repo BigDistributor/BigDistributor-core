@@ -1,4 +1,4 @@
-package com.bigdistributor.controllers.blockmanagement.block;
+package com.bigdistributor.core.blockmanagement.block;
 
 public class BlockFunctions {
     public static int[] halfkernelsizes(double[] sigma) {

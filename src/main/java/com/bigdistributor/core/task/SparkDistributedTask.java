@@ -1,7 +1,7 @@
 package com.bigdistributor.core.task;
 
 import com.bigdistributor.biglogger.adapters.Log;
-import com.bigdistributor.controllers.blockmanagement.blockinfo.BasicBlockInfo;
+import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
 import com.bigdistributor.core.task.items.Metadata;
 import com.bigdistributor.core.task.items.SerializableParams;
 import com.bigdistributor.io.mvrecon.SpimHelpers;

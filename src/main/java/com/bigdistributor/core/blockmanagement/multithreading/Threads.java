@@ -1,4 +1,4 @@
-package com.bigdistributor.controllers.blockmanagement.multithreading;
+package com.bigdistributor.core.blockmanagement.multithreading;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

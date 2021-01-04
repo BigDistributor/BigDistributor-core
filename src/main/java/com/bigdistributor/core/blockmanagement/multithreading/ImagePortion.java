@@ -1,4 +1,4 @@
-package com.bigdistributor.controllers.blockmanagement.multithreading;
+package com.bigdistributor.core.blockmanagement.multithreading;
 
 import java.util.Vector;
 

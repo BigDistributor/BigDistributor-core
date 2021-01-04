@@ -1,6 +1,6 @@
 package com.bigdistributor.io.mvrecon;
 
-import com.bigdistributor.controllers.blockmanagement.blockinfo.BasicBlockInfo;
+import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
 import com.bigdistributor.io.DataExtension;
 import mpicbg.spim.data.SpimDataException;
 import net.imglib2.util.Util;

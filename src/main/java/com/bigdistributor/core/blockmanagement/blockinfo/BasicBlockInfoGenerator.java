@@ -1,4 +1,4 @@
-package com.bigdistributor.controllers.blockmanagement.blockinfo;
+package com.bigdistributor.core.blockmanagement.blockinfo;
 
 import net.imglib2.Interval;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;
