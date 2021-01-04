@@ -5,8 +5,8 @@ import com.bigdistributor.core.tools.ArrayHelpers;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;
 import net.imglib2.util.Util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComplexBlocInfoGenerator implements BlockInfoGenerator<ComplexBlockInfo> {
 
@@ -38,7 +38,7 @@ public class ComplexBlocInfoGenerator implements BlockInfoGenerator<ComplexBlock
 	}
 
 	@Override
-	public Map<Integer, ComplexBlockInfo> divideIntoBlockInfo() {
+	public List<ComplexBlockInfo> divideIntoBlockInfo() {
 
 		final int numDimensions = imgSize.length;
 
@@ -85,7 +85,7 @@ public class ComplexBlocInfoGenerator implements BlockInfoGenerator<ComplexBlock
 		// now we instantiate the individual blocks iterating over all dimensions
 		// we use the well-known ArrayLocalizableCursor for that
 		final LocalizingZeroMinIntervalIterator cursor = new LocalizingZeroMinIntervalIterator(numBlocks);
-		final Map<Integer, ComplexBlockInfo> blockinfosList = new HashMap<>();
+		final List<ComplexBlockInfo> blockinfosList = new ArrayList<>();
 
 		final int[] currentBlock = new int[numDimensions];
 		int i = 0;
@@ -109,7 +109,7 @@ public class ComplexBlocInfoGenerator implements BlockInfoGenerator<ComplexBlock
 				x2[d] = x1[d]+effectiveSize[d]-1;
 			}
 
-			blockinfosList.put(i,
+			blockinfosList.add(
 					new ComplexBlockInfo(gridOffset, blockSize, effectiveSize,x1, x2, offset, effectiveLocalOffset,effectiveLocalOffset, true));
 			i++;
 		}

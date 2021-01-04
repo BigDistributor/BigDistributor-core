@@ -12,7 +12,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SerializableParams<T> implements Serializable {
+public class SerializableParams<T extends SerializableParams> implements Serializable {
     private static final long serialVersionUID = -3611993522419283535L;
     private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 //    private final Class<T> type;
@@ -55,7 +55,7 @@ public class SerializableParams<T> implements Serializable {
     }
 
     private Boolean checkSerialization(File file) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
-        T serializedClass = fromJson(file);
+        SerializableParams serializedClass = fromJson(file);
         if (this == serializedClass) {
             return true;
         }
@@ -63,7 +63,7 @@ public class SerializableParams<T> implements Serializable {
 
     }
 
-    public T fromJson(File file) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+    public SerializableParams fromJson(File file) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
         return getGson().fromJson(new FileReader(file), type.getClass());
     }
 

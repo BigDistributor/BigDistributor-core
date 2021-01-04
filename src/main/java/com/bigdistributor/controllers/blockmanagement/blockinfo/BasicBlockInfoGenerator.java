@@ -1,73 +1,102 @@
 package com.bigdistributor.controllers.blockmanagement.blockinfo;
 
+import net.imglib2.Interval;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;
 import net.imglib2.util.Util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BasicBlockInfoGenerator  implements BlockInfoGenerator<BasicBlockInfo>{
+public class BasicBlockInfoGenerator implements BlockInfoGenerator<BasicBlockInfo> {
 
-	final long[] imgSize;
-	final long[] blockSize;
+    private final long[] maxs;
+    private final long[] blockSize;
+    private final long[] mins;
 
-	public BasicBlockInfoGenerator(long[] imgSize, long[] blockSize) {
-		this.imgSize = imgSize;
-		this.blockSize = blockSize;
-	}
+    public BasicBlockInfoGenerator(Interval interval, long[] blockSize) {
+        this(getMins(interval), getMaxs(interval), blockSize);
+    }
 
-	public Map<Integer, BasicBlockInfo> divideIntoBlockInfo( ) {
-		
-		final int numDimensions = imgSize.length;
+    public BasicBlockInfoGenerator(long[] mins, long[] maxs, long[] blockSize) {
+        this.mins = mins;
+        this.maxs = maxs;
+        this.blockSize = blockSize;
+    }
 
-		// compute the amount of blocks needed
-		final long[] numBlocks = new long[numDimensions];
 
-		
-		for (int d = 0; d < numDimensions; ++d) {
-			numBlocks[d] = imgSize[d] / blockSize[d];
+    public BasicBlockInfoGenerator(long[] sizes, long[] blockSize) {
+        this(new long[sizes.length], sizes, blockSize);
+    }
 
-			// if the modulo is not 0 we need one more that is only partially useful
-			if (imgSize[d] % blockSize[d] != 0)
-				++numBlocks[d];
-		}
+    private static long[] getMins(Interval interval) {
+        long[] mins = new long[interval.numDimensions()];
+        for (int i = 0; i < interval.numDimensions(); i++) {
+            mins[i] = interval.min(i);
+        }
+        return mins;
+    }
 
-		logger.info("imgSize " + Util.printCoordinates(imgSize));
-		logger.info("blockSize " + Util.printCoordinates(blockSize));
-		logger.info("numBlocks " + Util.printCoordinates(numBlocks));
+    private static long[] getMaxs(Interval interval) {
+        long[] maxs = new long[interval.numDimensions()];
+        for (int i = 0; i < interval.numDimensions(); i++) {
+            maxs[i] = interval.max(i);
+        }
+        return maxs;
+    }
 
-		// now we instantiate the individual blocks iterating over all dimensions
-		// we use the well-known ArrayLocalizableCursor for that
-		final LocalizingZeroMinIntervalIterator cursor = new LocalizingZeroMinIntervalIterator(numBlocks);
-		final Map<Integer, BasicBlockInfo> blockinfosList = new HashMap<Integer, BasicBlockInfo>();
+    public List<BasicBlockInfo> divideIntoBlockInfo() {
 
-		final int[] currentBlock = new int[numDimensions];
-		int i = 0;
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.localize(currentBlock);
-			final long[] gridOffset = Util.int2long(currentBlock);
-			
-			// compute the current offset
-			//final long[] offset = new long[numDimensions];
-			final long[] min = new long[numDimensions];
-			final long[] max = new long[numDimensions];
-			final long[] effectiveBlockSize = blockSize.clone();
+        final int numDimensions = maxs.length;
 
-			for (int d = 0; d < numDimensions; d++) {
-				min[d] = currentBlock[d] * blockSize[d];
+        // compute the amount of blocks needed
+        final long[] numBlocks = new long[numDimensions];
 
-				if (min[d] + blockSize[d] > imgSize[d])
-					effectiveBlockSize[d] = imgSize[d] - min[d];
 
-				max[d] = min[d]+effectiveBlockSize[d]-1;
-			}
+        for (int d = 0; d < numDimensions; ++d) {
+            long size = maxs[d] - mins[d];
+            numBlocks[d] = size / blockSize[d];
 
-			blockinfosList.put(i,
-					new BasicBlockInfo(gridOffset,blockSize, effectiveBlockSize, min,max));
-			i++;
-		}
+            // if the modulo is not 0 we need one more that is only partially useful
+            if (size % blockSize[d] != 0)
+                ++numBlocks[d];
+        }
 
-		return blockinfosList;
-	}
+        logger.info("Img dims: " + Util.printCoordinates(mins) + "  -> " + Util.printCoordinates(maxs));
+        logger.info("blockSize " + Util.printCoordinates(blockSize));
+        logger.info("numBlocks " + Util.printCoordinates(numBlocks));
+
+        // now we instantiate the individual blocks iterating over all dimensions
+        // we use the well-known ArrayLocalizableCursor for that
+        final LocalizingZeroMinIntervalIterator cursor = new LocalizingZeroMinIntervalIterator(numBlocks);
+        final List<BasicBlockInfo> blockinfosList = new ArrayList<BasicBlockInfo>();
+
+        final int[] currentBlock = new int[numDimensions];
+        int i = 0;
+        while (cursor.hasNext()) {
+            cursor.fwd();
+            cursor.localize(currentBlock);
+            final long[] gridOffset = Util.int2long(currentBlock);
+
+            // compute the current offset
+            //final long[] offset = new long[numDimensions];
+            final long[] min = new long[numDimensions];
+            final long[] max = new long[numDimensions];
+            final long[] effectiveBlockSize = blockSize.clone();
+
+            for (int d = 0; d < numDimensions; d++) {
+                long size = maxs[d] - mins[d];
+                min[d] = currentBlock[d] * blockSize[d] + mins[d];
+
+                if (min[d] + blockSize[d] > size)
+                    effectiveBlockSize[d] = size - min[d];
+
+                max[d] = min[d] + effectiveBlockSize[d] - 1;
+            }
+
+            blockinfosList.add(new BasicBlockInfo(gridOffset, blockSize, effectiveBlockSize, min, max));
+            i++;
+        }
+
+        return blockinfosList;
+    }
 }

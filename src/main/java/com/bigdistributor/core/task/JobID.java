@@ -30,7 +30,7 @@ public class JobID {
         this.id = id;
     }
 
-    private JobID() {
+    public JobID() {
         this.id = format(id());
     }
 
