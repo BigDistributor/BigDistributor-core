@@ -9,7 +9,7 @@ import java.util.*;
 public class ConfigManager {
 
     private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
-    private final static String CONFIG_FILE = "com.bigdistributor.tasks.bigdistributor.properties";
+    private final static String CONFIG_FILE = "bigdistributor.properties";
     private static Map<PropertiesKeys, Object> config;
 
     public static void init() {
@@ -25,8 +25,8 @@ public class ConfigManager {
                 config = formatProperties(prop);
                 saveConfig(prop, f);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NullPointerException e) {
+            logger.error(e.toString());
             Properties prop = createConfig();
             config = formatProperties(prop);
         }

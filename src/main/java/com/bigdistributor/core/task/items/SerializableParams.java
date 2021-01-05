@@ -22,7 +22,6 @@ public class SerializableParams<T extends SerializableParams> implements Seriali
     protected GsonBuilder builder;
 
     public SerializableParams() {
-//        this.type = type;
         init();
         this.builder = new GsonBuilder().serializeSpecialFloatingPointValues().enableComplexMapKeySerialization();
         for (Map.Entry<Class, JsonSerializerDeserializer> entry : serializers.entrySet()) {

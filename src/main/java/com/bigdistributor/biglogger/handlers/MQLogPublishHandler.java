@@ -38,6 +38,10 @@ public class MQLogPublishHandler extends Handler {
     public void publish(final LogRecord record) {
         if (ensureReady()) {
             try {
+                ConnectionFactory factory = new ConnectionFactory();
+                factory.setHost(server);
+                Connection connection = factory.newConnection();
+                channel = connection.createChannel();
                 String message;
                 if (record.getLevel() == Level.CONFIG) {
                     message = record.getMessage();
@@ -45,8 +49,9 @@ public class MQLogPublishHandler extends Handler {
                     message = new MQMessage(MQTopic.LOG, "0", 0, record.getMessage()).toString();
                 }
                 channel.basicPublish("", queue, null, message.getBytes());
-                System.out.println(" [x] Sent '" + message + "'");
-            } catch (IOException e) {
+//                System.out.println(" [x] Sent '" + message + "'");
+                return;
+            } catch (IOException | TimeoutException e) {
                 e.printStackTrace();
             }
         }
@@ -85,7 +90,7 @@ public class MQLogPublishHandler extends Handler {
 
     private void initServer() {
         this.server = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQServer));
-        this.queue  =  String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQQueue));
+        this.queue = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQQueue));
     }
 
     @Override

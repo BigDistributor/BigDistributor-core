@@ -24,7 +24,6 @@ public abstract class BigDistributorMainApp {
 
     public BigDistributorMainApp() {
         BigDistributorApp dist = this.getClass().getAnnotation(BigDistributorApp.class);
-
         initLogger(dist.mode());
         ConfigManager.init();
         LoggerManager.initAdvanceHandlers();

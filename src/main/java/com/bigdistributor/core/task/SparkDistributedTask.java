@@ -26,19 +26,19 @@ import java.util.concurrent.Callable;
 public class SparkDistributedTask<T extends NativeType<T>, K extends SerializableParams> implements Callable<Void> {
     //<D extends SpimData2, K extends SerializableParams>
     @Option(names = {"-o", "--output"}, required = true, description = "The path of the Data")
-    private String output;
+    String output;
 
     @Option(names = {"-i", "--input"}, required = true, description = "The path of the Data")
-    private String input;
+    String input;
 
     @Option(names = {"-id", "--jobid"}, required = true, description = "The path of the Data")
-    private String jobId;
+    String jobId;
 
     @Option(names = {"-m", "--meta"}, required = true, description = "The path of the MetaData file")
-    private String metadataPath;
+    String metadataPath;
 
-    @Option(names = {"-p", "--param"}, required = true, description = "The path of the MetaData file")
-    private String paramPath;
+    @Option(names = {"-p", "--param"}, required = false, description = "The path of the MetaData file")
+    String paramPath;
 
     private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
@@ -54,26 +54,36 @@ public class SparkDistributedTask<T extends NativeType<T>, K extends Serializabl
     @Override
     public Void call() throws Exception {
         md = Metadata.fromJson(metadataPath);
+        if (md == null) {
+            logger.error("Error metadata file !");
+            return null;
+        }
         JobID.set(jobId);
-        logger.info(jobId + "started!");
-        SerializableParams<K> params = new SerializableParams<K>().fromJson(new File(paramPath));
+        logger.info(jobId + " started!");
+        SerializableParams<K> params = null;
+        if (paramPath != null) {
+            File paramFile = new File(paramPath);
+            params = new SerializableParams<K>().fromJson(paramFile);
+        }
         SpimData2 spimdata = new XmlIoSpimData2("").load(input);
         SparkConf sparkConf = new SparkConf().setAppName(jobId);
         N5Writer n5 = new N5FSWriter(output);
         final JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+
+        SerializableParams<K> finalParams = params;
         sparkContext.parallelize(md.getBlocksInfo(), md.getBlocksInfo().size()).foreach(new VoidFunction<BasicBlockInfo>() {
             @Override
             public void call(BasicBlockInfo binfo) throws Exception {
                 int blockID = binfo.getBlockId();
                 logger.blockStarted(blockID, "start processing..");
                 SpimHelpers.getBb(binfo);
-                RandomAccessibleInterval<T> result = mainTask.blockTask(spimdata, params, SpimHelpers.getBb(binfo));
+                RandomAccessibleInterval<T> result = mainTask.blockTask(spimdata, finalParams, SpimHelpers.getBb(binfo));
                 logger.blockLog(blockID, " Got processed image");
-                N5Utils.saveBlock(result,n5,dataset,binfo.getGridOffset());
-                logger.blockDone(blockID,"Task done.");
+                N5Utils.saveBlock(result, n5, dataset, binfo.getGridOffset());
+                logger.blockDone(blockID, "Task done.");
             }
         });
         return null;
-}
+    }
 
 }

@@ -11,7 +11,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-@LogHandler(format = "terminal", type = LogMode.Basic, modes = {ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
+@LogHandler(format = "terminal", type = LogMode.Basic, modes = {ApplicationMode.ExecutionNode, ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
 public class TerminalLogHandler extends Handler {
 
     public TerminalLogHandler() {
