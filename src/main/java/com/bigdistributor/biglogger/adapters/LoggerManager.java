@@ -17,7 +17,7 @@ public class LoggerManager {
         if(type==null){
             throw new InvalidApplicationModeException("Can't be null");
         }
-        final Set<Class<?>> indexableClasses = new Reflections("").getTypesAnnotatedWith(LogHandler.class);
+        final Set<Class<?>> indexableClasses = new Reflections("com.bigdistributor").getTypesAnnotatedWith(LogHandler.class);
         System.out.println("Initiating Logger for application mode: "+type);
         LogManager.getLogManager().reset();
         Logger rootLogger = LogManager.getLogManager().getLogger("");

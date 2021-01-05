@@ -7,7 +7,6 @@ import com.bigdistributor.core.config.ConfigManager;
 import com.bigdistributor.core.config.PropertiesKeys;
 import com.bigdistributor.core.remote.mq.entities.MQMessage;
 import com.bigdistributor.core.remote.mq.entities.MQTopic;
-import com.bigdistributor.core.remote.mq.entities.Server;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -25,12 +24,14 @@ public class MQLogPublishHandler extends Handler {
 
     private boolean init = false;
 
+
     public MQLogPublishHandler() {
         System.out.println("Kafka Log Handler initiated..");
         ensureReady();
     }
 
     private String server;
+    private String queue;
 
     @Override
     public void publish(final LogRecord record) {
@@ -42,7 +43,7 @@ public class MQLogPublishHandler extends Handler {
                 } else {
                     message = new MQMessage(MQTopic.LOG, "0", 0, record.getMessage()).toString();
                 }
-                channel.basicPublish("", Server.QUEUE, null, message.getBytes());
+                channel.basicPublish("", queue, null, message.getBytes());
                 System.out.println(" [x] Sent '" + message + "'");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -61,16 +62,16 @@ public class MQLogPublishHandler extends Handler {
     private void initChannel() {
 
         if (this.server == null) {
-            server = initServer();
+            initServer();
         }
-        String server = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQServer));
+
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(server);
         try (Connection connection = factory.newConnection()) {
             channel = connection.createChannel();
-            channel.queueDeclare(Server.QUEUE, false, true, false, null);
+//            channel.queueDeclare(queue, false, true, false, null);
             MQMessage message = new MQMessage(MQTopic.LOG, "0", 0, "Connected");
-            channel.basicPublish("", Server.QUEUE, null, message.toString().getBytes());
+            channel.basicPublish("", queue, null, message.toString().getBytes());
             System.out.println(" [x] Sent '" + message + "'");
         } catch (TimeoutException e) {
             e.printStackTrace();
@@ -81,9 +82,9 @@ public class MQLogPublishHandler extends Handler {
 
     }
 
-    private String initServer() {
-        String host = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQServer));
-        return host;
+    private void initServer() {
+        this.server = String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQServer));
+        this.queue  =  String.valueOf(ConfigManager.getConfig().get(PropertiesKeys.MQQueue));
     }
 
     @Override
@@ -92,9 +93,11 @@ public class MQLogPublishHandler extends Handler {
 
     @Override
     public void close() {
+
         if (this.channel != null) {
             try {
-                this.channel.close();
+                if (this.channel.isOpen())
+                    this.channel.close();
                 this.channel = null;
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -4,10 +4,7 @@ import com.bigdistributor.biglogger.adapters.Log;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class ConfigManager {
 
@@ -36,6 +33,9 @@ public class ConfigManager {
     }
 
     public static Map<PropertiesKeys, Object> getConfig() {
+        if (config == null) {
+            init();
+        }
         return config;
     }
 
@@ -53,6 +53,7 @@ public class ConfigManager {
     }
 
     private static Map<PropertiesKeys, Object> formatProperties(Properties appProps) {
+        List<PropertiesKeys> proprietiesNotFound = Arrays.asList(PropertiesKeys.values());
         Map<PropertiesKeys, Object> appConfig = new HashMap<>();
         Enumeration<String> enums = (Enumeration<String>) appProps.propertyNames();
         while (enums.hasMoreElements()) {
@@ -61,15 +62,19 @@ public class ConfigManager {
             System.out.println(key + " : " + value);
             try {
                 PropertiesKeys propKey = PropertiesKeys.getPropForKey(key);
+                proprietiesNotFound.remove(propKey);
                 Object propValue = propKey.objectOf(value);
                 appConfig.put(propKey, propValue);
-
             } catch (IllegalArgumentException e) {
                 logger.error("Invalid property not found : " + key + " -> " + value);
             } catch (ClassCastException e) {
                 logger.error("Invalid value for property : " + key + " -> " + value + PropertiesKeys.getPropForKey(key).getDefaultValue().getClass());
                 appConfig.put(PropertiesKeys.valueOf(key), PropertiesKeys.valueOf(key).getDefaultValue());
             }
+        }
+        for (PropertiesKeys prop : proprietiesNotFound) {
+            logger.error("Property not found, set default : " + prop.getKey() + " -> " + prop.getDefaultValue());
+            appConfig.put(prop, prop.getDefaultValue());
         }
         return appConfig;
     }

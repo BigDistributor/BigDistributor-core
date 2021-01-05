@@ -3,6 +3,7 @@ package com.bigdistributor.core.config;
 public enum PropertiesKeys {
     Version("config.version", 1.0),
     MQServer("mq.server.host", "ec2-3-91-12-31.compute-1.amazonaws.com"),
+    MQQueue("mq.server.queue", "bigdistributor"),
     MQServerPort("mq.server.port", 5672);
 
     private final String key;
