@@ -2,6 +2,7 @@ package com.bigdistributor.biglogger.handlers;
 
 
 import com.bigdistributor.biglogger.generic.LogHandler;
+import com.bigdistributor.biglogger.generic.LogMode;
 import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.core.config.ConfigManager;
 import com.bigdistributor.core.config.PropertiesKeys;
@@ -18,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 //TODO change to MQ
-@LogHandler(format = "MQ", modes = {ApplicationMode.ExecutionNode})
+@LogHandler(format = "MQ", type = LogMode.Advance, modes = {ApplicationMode.ExecutionNode})
 public class MQLogPublishHandler extends Handler {
     private static Channel channel;
 

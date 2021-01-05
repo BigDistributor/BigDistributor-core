@@ -5,17 +5,44 @@ import com.bigdistributor.core.remote.mq.entities.MQMessage;
 import com.bigdistributor.core.remote.mq.entities.MQTopic;
 import com.bigdistributor.core.task.JobID;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class Log extends Logger {
+
+    private static Logger rootLogger;
+
+    static {
+        init();
+    }
 
     protected Log(String name) {
         super(name, null);
     }
 
     public static Log getLogger(String name) {
-        return new Log(name);
+        if (rootLogger == null) {
+            init();
+        }
+        Log log = new Log(name);
+        log.setParent(rootLogger);
+        return log;
+    }
+
+    private static void init() {
+        rootLogger = LogManager.getLogManager().getLogger("");
+//        Handler handlerObj = new ConsoleHandler();
+//        handlerObj.setLevel(Level.ALL);
+//        rootLogger.addHandler(handlerObj);
+        rootLogger.setLevel(Level.ALL);
+        rootLogger.log(Level.FINEST, "finest");
+    }
+
+    public static void setRoot(Logger rootLogger) {
+        Log.rootLogger = rootLogger;
+    }
+
+    public static Logger getRoot() {
+        return rootLogger;
     }
 
     public void blockDone(Integer blockId, String str) {

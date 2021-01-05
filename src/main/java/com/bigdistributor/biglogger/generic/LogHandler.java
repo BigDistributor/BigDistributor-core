@@ -24,7 +24,11 @@ public @interface LogHandler {
 
     String format();
 
+    LogMode type();
+
     ApplicationMode[] modes();
 
     double priority() default 0.0D;
 }
+
+

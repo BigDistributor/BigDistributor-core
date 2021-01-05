@@ -1,14 +1,17 @@
 package com.bigdistributor.biglogger.handlers;
 
 import com.bigdistributor.biglogger.generic.LogHandler;
+import com.bigdistributor.biglogger.generic.LogMode;
 import com.bigdistributor.core.app.ApplicationMode;
+import com.bigdistributor.core.tools.Colors;
 
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-@LogHandler(format = "terminal", modes = {ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
+@LogHandler(format = "terminal", type = LogMode.Basic, modes = {ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
 public class TerminalLogHandler extends Handler {
 
     public TerminalLogHandler() {
@@ -16,11 +19,12 @@ public class TerminalLogHandler extends Handler {
     }
 
     private static final Formatter defaultFormatter = new Formatter() {
-        private static final String format = "[%1$tF %1$tT] [%2$-7s] %3$s : %4$s";
+        private static final String format = "%1$s [%2$tF %2$tT] [%3$-7s] %4$s : %5$s";
 
         @Override
         public String format(LogRecord record) {
             return String.format(format,
+                    getColor(record.getLevel()),
                     new Date(record.getMillis()),
                     record.getLevel().getLocalizedName(),
                     record.getSourceClassName(),
@@ -28,6 +32,18 @@ public class TerminalLogHandler extends Handler {
             );
         }
     };
+
+    private static String getColor(Level level) {
+        int val = level.intValue();
+        int range = (val<801)?0:((val<901)?1:((val<1001)?2:3));
+        switch (range){
+            case 0 : return Colors.GREEN.getANSI_CODE();
+            case 1 : return Colors.WHITE.getANSI_CODE();
+            case 2 : return Colors.PURPLE.getANSI_CODE();
+            case 3 : return Colors.RED.getANSI_CODE();
+        }
+        return Colors.CYAN.getANSI_CODE();
+    }
 
     @Override
     public void publish(final LogRecord record) {

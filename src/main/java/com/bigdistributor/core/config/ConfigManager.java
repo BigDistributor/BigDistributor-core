@@ -53,13 +53,13 @@ public class ConfigManager {
     }
 
     private static Map<PropertiesKeys, Object> formatProperties(Properties appProps) {
-        List<PropertiesKeys> proprietiesNotFound = Arrays.asList(PropertiesKeys.values());
+        List<PropertiesKeys> proprietiesNotFound = new LinkedList<>(Arrays.asList(PropertiesKeys.values()));
         Map<PropertiesKeys, Object> appConfig = new HashMap<>();
         Enumeration<String> enums = (Enumeration<String>) appProps.propertyNames();
         while (enums.hasMoreElements()) {
             String key = enums.nextElement();
             String value = appProps.getProperty(key);
-            System.out.println(key + " : " + value);
+            logger.info(key + " : " + value);
             try {
                 PropertiesKeys propKey = PropertiesKeys.getPropForKey(key);
                 proprietiesNotFound.remove(propKey);
