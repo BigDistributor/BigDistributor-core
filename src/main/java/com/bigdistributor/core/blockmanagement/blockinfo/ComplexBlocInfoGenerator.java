@@ -2,6 +2,7 @@ package com.bigdistributor.core.blockmanagement.blockinfo;
 
 import com.bigdistributor.core.blockmanagement.block.BlockFunctions;
 import com.bigdistributor.core.tools.ArrayHelpers;
+import net.imglib2.Localizable;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;
 import net.imglib2.util.Util;
 
@@ -35,6 +36,11 @@ public class ComplexBlocInfoGenerator implements BlockInfoGenerator<ComplexBlock
 		this.kernelSize = kernelSize;
 		this.blockSize = blockSizes;
 
+	}
+
+	@Override
+	public List<ComplexBlockInfo> getBlockInfos() {
+		return null;
 	}
 
 	@Override
@@ -115,5 +121,10 @@ public class ComplexBlocInfoGenerator implements BlockInfoGenerator<ComplexBlock
 		}
 
 		return blockinfosList;
+	}
+
+	@Override
+	public ComplexBlockInfo getBlockForPosition(Localizable l) {
+		return null;
 	}
 }

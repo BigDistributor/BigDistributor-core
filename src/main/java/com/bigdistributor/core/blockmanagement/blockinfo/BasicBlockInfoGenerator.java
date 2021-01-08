@@ -1,6 +1,7 @@
 package com.bigdistributor.core.blockmanagement.blockinfo;
 
 import net.imglib2.Interval;
+import net.imglib2.Localizable;
 import net.imglib2.iterator.LocalizingZeroMinIntervalIterator;
 import net.imglib2.util.Util;
 
@@ -12,6 +13,8 @@ public class BasicBlockInfoGenerator implements BlockInfoGenerator<BasicBlockInf
     private final long[] maxs;
     private final long[] blockSize;
     private final long[] mins;
+    private List<BasicBlockInfo> blocks;
+    private long[] numBlocks;
 
     public BasicBlockInfoGenerator(Interval interval, long[] blockSize) {
         this(getMins(interval), getMaxs(interval), blockSize);
@@ -44,6 +47,14 @@ public class BasicBlockInfoGenerator implements BlockInfoGenerator<BasicBlockInf
         return maxs;
     }
 
+    @Override
+    public synchronized List<BasicBlockInfo> getBlockInfos() {
+        if (blocks == null) {
+            divideIntoBlockInfo();
+        }
+        return blocks;
+    }
+
     public List<BasicBlockInfo> divideIntoBlockInfo() {
 
         final int numDimensions = maxs.length;
@@ -60,6 +71,7 @@ public class BasicBlockInfoGenerator implements BlockInfoGenerator<BasicBlockInf
             if (size % blockSize[d] != 0)
                 ++numBlocks[d];
         }
+        this.numBlocks = numBlocks;
 
         logger.info("Img dims: " + Util.printCoordinates(mins) + "  -> " + Util.printCoordinates(maxs));
         logger.info("blockSize " + Util.printCoordinates(blockSize));
@@ -74,6 +86,8 @@ public class BasicBlockInfoGenerator implements BlockInfoGenerator<BasicBlockInf
         int i = 0;
         while (cursor.hasNext()) {
             cursor.fwd();
+
+            System.out.println(Util.printCoordinates(currentBlock));
             cursor.localize(currentBlock);
             final long[] gridOffset = Util.int2long(currentBlock);
 
@@ -93,10 +107,30 @@ public class BasicBlockInfoGenerator implements BlockInfoGenerator<BasicBlockInf
                 max[d] = min[d] + effectiveBlockSize[d] - 1;
             }
 
-            blockinfosList.add(new BasicBlockInfo(gridOffset, blockSize, effectiveBlockSize, min, max));
+            blockinfosList.add(new BasicBlockInfo(i, gridOffset, blockSize, effectiveBlockSize, min, max));
             i++;
         }
 
+        blocks = blockinfosList;
         return blockinfosList;
+    }
+
+    @Override
+    public BasicBlockInfo getBlockForPosition(Localizable l) {
+        if (blocks == null) {
+            getBlockInfos();
+        }
+        int[] gridPosition = new int[l.numDimensions()];
+        for (int d = 0; d < l.numDimensions(); d++) {
+            gridPosition[d] = (int) ((l.getIntPosition(d)-mins[d]) / blockSize[d]);
+        }
+        int position = 0;
+        int totalBlocks = 1;
+        for (int i = 0; i < l.numDimensions(); i++) {
+            if (i > 0)
+                totalBlocks *= numBlocks[i - 1];
+            position += gridPosition[i] * totalBlocks;
+        }
+        return blocks.get(position);
     }
 }

@@ -66,22 +66,20 @@ public class SparkDistributedTask<T extends NativeType<T>, K extends Serializabl
             params = new SerializableParams<K>().fromJson(paramFile);
         }
         SpimData2 spimdata = new XmlIoSpimData2("").load(input);
-        SparkConf sparkConf = new SparkConf().setAppName(jobId);
+        SparkConf sparkConf = new SparkConf().setAppName(jobId).set( "spark.serializer", "org.apache.spark.serializer.KryoSerializer" );;
         N5Writer n5 = new N5FSWriter(output);
         final JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
+
         SerializableParams<K> finalParams = params;
-        sparkContext.parallelize(md.getBlocksInfo(), md.getBlocksInfo().size()).foreach(new VoidFunction<BasicBlockInfo>() {
-            @Override
-            public void call(BasicBlockInfo binfo) throws Exception {
-                int blockID = binfo.getBlockId();
-                logger.blockStarted(blockID, "start processing..");
-                SpimHelpers.getBb(binfo);
-                RandomAccessibleInterval<T> result = mainTask.blockTask(spimdata, finalParams, SpimHelpers.getBb(binfo));
-                logger.blockLog(blockID, " Got processed image");
-                N5Utils.saveBlock(result, n5, dataset, binfo.getGridOffset());
-                logger.blockDone(blockID, "Task done.");
-            }
+        sparkContext.parallelize(md.getBlocksInfo(), md.getBlocksInfo().size()).foreach((VoidFunction<BasicBlockInfo>) binfo -> {
+            int blockID = binfo.getBlockId();
+            logger.blockStarted(blockID, " start processing..");
+            SpimHelpers.getBb(binfo);
+            RandomAccessibleInterval<T> result = mainTask.blockTask(spimdata, finalParams, SpimHelpers.getBb(binfo));
+            logger.blockLog(blockID, " Got processed image");
+            N5Utils.saveBlock(result, n5, dataset, binfo.getGridOffset());
+            logger.blockDone(blockID, " Task done.");
         });
         return null;
     }
