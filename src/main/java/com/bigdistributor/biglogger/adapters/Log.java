@@ -5,17 +5,23 @@ import com.bigdistributor.core.remote.mq.entities.MQMessage;
 import com.bigdistributor.core.remote.mq.entities.MQTopic;
 import com.bigdistributor.core.task.JobID;
 
+import java.io.Serializable;
 import java.util.logging.*;
 
-public class Log extends Logger {
+public class Log extends Logger implements Serializable {
 
     private static Logger rootLogger;
 
-    static {
+//    static {
+//        init();
+//    }
+
+    public Log(){
+        super("",null);
         init();
     }
 
-    protected Log(String name) {
+    public Log(String name) {
         super(name, null);
     }
 
@@ -47,22 +53,22 @@ public class Log extends Logger {
 
     public void blockDone(Integer blockId, String str) {
         MQMessage msg = new MQMessage(MQTopic.TASK_DONE, JobID.get(), blockId, str);
-        log(Level.CONFIG, msg.toString());
+        log(Level.WARNING, msg.toString());
     }
 
     public void blockStarted(Integer blockId, String str) {
         MQMessage msg = new MQMessage(MQTopic.TASK_STARTED, JobID.get(), blockId, str);
-        log(Level.CONFIG, msg.toString());
+        log(Level.WARNING, msg.toString());
     }
 
     public void blockError(Integer blockId, String str) {
         MQMessage msg = new MQMessage(MQTopic.TASK_ERROR, JobID.get(), blockId, str);
-        log(Level.CONFIG, msg.toString());
+        log(Level.WARNING, msg.toString());
     }
 
     public void blockLog(Integer blockId, String str) {
         MQMessage msg = new MQMessage(MQTopic.LOG, JobID.get(), blockId, str);
-        log(Level.CONFIG, msg.toString());
+        log(Level.WARNING, msg.toString());
     }
 
 

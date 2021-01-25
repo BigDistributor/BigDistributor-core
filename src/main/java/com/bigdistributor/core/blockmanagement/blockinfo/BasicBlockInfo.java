@@ -3,7 +3,9 @@ package com.bigdistributor.core.blockmanagement.blockinfo;
 
 import com.bigdistributor.core.tools.ArrayHelpers;
 
-public class BasicBlockInfo {
+import java.io.Serializable;
+
+public class BasicBlockInfo implements Serializable {
 
     private int blockId;
 

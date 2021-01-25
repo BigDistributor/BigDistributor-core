@@ -9,7 +9,7 @@ import org.scijava.log.LogService;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-@LogHandler(format = "fiji", type = LogMode.Basic, modes = {ApplicationMode.DistributionMasterFiji, ApplicationMode.OneNodeFiji})
+@LogHandler( type = LogMode.Basic, modes = {ApplicationMode.DistributionMasterFiji, ApplicationMode.OneNodeFiji})
 public class FijiLogHandler extends Handler {
     public FijiLogHandler() {
         System.out.println("Fiji Log Handler initiated..");

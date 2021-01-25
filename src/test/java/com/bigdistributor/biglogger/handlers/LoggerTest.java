@@ -18,11 +18,11 @@ public class LoggerTest {
 
     @Test
     public void testLoggerManager() throws InvalidApplicationModeException {
-        LoggerManager.initLogger(ApplicationMode.OneNodeHeadless);
+        LoggerManager.initLoggers(ApplicationMode.OneNodeHeadless);
     }
 
     @Test(expected = InvalidApplicationModeException.class)
     public void testNullLoggerManager() throws InvalidApplicationModeException {
-        LoggerManager.initLogger(null);
+        LoggerManager.initLoggers(null);
     }
 }

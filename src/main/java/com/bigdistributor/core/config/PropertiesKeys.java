@@ -1,10 +1,13 @@
 package com.bigdistributor.core.config;
 
+import com.bigdistributor.core.remote.mq.MQServerType;
+
 public enum PropertiesKeys {
     Version("config.version", 1.0),
-    MQServer("mq.server.host", "ec2-3-91-12-31.compute-1.amazonaws.com"),
+    MQType("mq.server.type", MQServerType.RabbitMQ),
+    MQServer("mq.server.host", "ec2-18-184-134-47.eu-central-1.compute.amazonaws.com"),
     MQQueue("mq.server.queue", "bigdistributor"),
-    MQServerPort("mq.server.port", 5672);
+    MQServerPort("mq.server.port", 9092);
 
     private final String key;
     private final Object defaultValue;
@@ -23,6 +26,8 @@ public enum PropertiesKeys {
     }
 
     public Object objectOf(String s) {
+        if (this == MQType)
+            return MQServerType.getForKey(s);
         if (defaultValue.getClass().isInstance(Double.class))
             return Double.valueOf(s);
         else if (defaultValue.getClass().isInstance(Integer.class))
@@ -32,7 +37,7 @@ public enum PropertiesKeys {
     }
 
     public static PropertiesKeys getPropForKey(String key) {
-        for( PropertiesKeys p: PropertiesKeys.values()){
+        for (PropertiesKeys p : PropertiesKeys.values()) {
             if (p.getKey().equalsIgnoreCase(key))
                 return p;
         }

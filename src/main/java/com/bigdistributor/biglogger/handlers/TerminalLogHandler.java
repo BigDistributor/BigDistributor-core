@@ -1,8 +1,5 @@
 package com.bigdistributor.biglogger.handlers;
 
-import com.bigdistributor.biglogger.generic.LogHandler;
-import com.bigdistributor.biglogger.generic.LogMode;
-import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.core.tools.Colors;
 
 import java.util.Date;
@@ -11,7 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-@LogHandler(format = "terminal", type = LogMode.Basic, modes = {ApplicationMode.ExecutionNode, ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
+//@LogHandler( type = LogMode.Basic, modes = {ApplicationMode.ExecutionNode, ApplicationMode.DistributionMaster, ApplicationMode.OneNodeHeadless})
 public class TerminalLogHandler extends Handler {
 
     public TerminalLogHandler() {

@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @IndexableClass
 public @interface LogHandler {
 
-    String format();
+    String format() default "";
 
     LogMode type();
 

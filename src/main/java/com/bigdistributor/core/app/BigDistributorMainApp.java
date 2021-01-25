@@ -6,6 +6,7 @@ import com.bigdistributor.biglogger.adapters.LoggerManager;
 import com.bigdistributor.core.config.ConfigManager;
 import com.bigdistributor.core.generic.InvalidApplicationModeException;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 /**
@@ -19,21 +20,16 @@ import java.util.logging.Logger;
  * @since V0.1
  */
 
-public abstract class BigDistributorMainApp {
+public abstract class BigDistributorMainApp implements Serializable {
     final Logger logger = Log.getLogger(BigDistributorMainApp.class.getName());
 
     public BigDistributorMainApp() {
         BigDistributorApp dist = this.getClass().getAnnotation(BigDistributorApp.class);
-        initLogger(dist.mode());
-        ConfigManager.init();
-        LoggerManager.initAdvanceHandlers();
-
-        logger.info("Main App: " + this.getClass() + " Type: " + dist.mode());
-    }
-
-    protected void initLogger(ApplicationMode mode) {
         try {
-            LoggerManager.initLogger(mode);
+            LoggerManager.initTerminal();
+            ConfigManager.init();
+            LoggerManager.initLoggers(dist.mode());
+            logger.info("Main App: " + this.getClass() + " Type: " + dist.mode());
         } catch (InvalidApplicationModeException e) {
             e.printStackTrace();
         }

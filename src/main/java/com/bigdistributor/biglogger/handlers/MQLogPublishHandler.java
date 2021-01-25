@@ -1,6 +1,7 @@
 package com.bigdistributor.biglogger.handlers;
 
 
+import com.bigdistributor.biglogger.adapters.Log;
 import com.bigdistributor.biglogger.generic.LogHandler;
 import com.bigdistributor.biglogger.generic.LogMode;
 import com.bigdistributor.core.app.ApplicationMode;
@@ -8,31 +9,39 @@ import com.bigdistributor.core.config.ConfigManager;
 import com.bigdistributor.core.config.PropertiesKeys;
 import com.bigdistributor.core.remote.mq.entities.MQMessage;
 import com.bigdistributor.core.remote.mq.entities.MQTopic;
+import com.bigdistributor.core.task.JobID;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 //TODO change to MQ
-@LogHandler(format = "MQ", type = LogMode.Advance, modes = {ApplicationMode.ExecutionNode})
+@LogHandler(format = "RabbitMq", type = LogMode.Advance, modes = {ApplicationMode.ExecutionNode})
 public class MQLogPublishHandler extends Handler {
+    private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
     private static Channel channel;
 
-    private boolean init = false;
-
-
-    public MQLogPublishHandler() {
-        System.out.println("Kafka Log Handler initiated..");
-        ensureReady();
-    }
-
+    private String jobId;
     private String server;
     private String queue;
+
+    public MQLogPublishHandler() {
+        logger.info("Remote Log Handler Initialization..");
+        ensureReady();
+        logger.info("Remote logger initiated.");
+    }
+
+    public MQLogPublishHandler(String server, String queue) {
+        this.server = server;
+        this.queue = queue;
+    }
+
 
     @Override
     public void publish(final LogRecord record) {
@@ -43,10 +52,10 @@ public class MQLogPublishHandler extends Handler {
                 Connection connection = factory.newConnection();
                 channel = connection.createChannel();
                 String message;
-                if (record.getLevel() == Level.CONFIG) {
+                if (record.getLevel() == Level.WARNING) {
                     message = record.getMessage();
                 } else {
-                    message = new MQMessage(MQTopic.LOG, "0", 0, record.getMessage()).toString();
+                    message = new MQMessage(MQTopic.LOG, jobId, 0, record.getMessage()).toString();
                 }
                 channel.basicPublish("", queue, null, message.getBytes());
 //                System.out.println(" [x] Sent '" + message + "'");
@@ -59,33 +68,10 @@ public class MQLogPublishHandler extends Handler {
 
 
     private synchronized boolean ensureReady() {
-        if (!init && this.channel == null)
-            initChannel();
-
-        return this.channel != null;
-    }
-
-    private void initChannel() {
-
-        if (this.server == null) {
+        if (this.server == null)
             initServer();
-        }
-
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(server);
-        try (Connection connection = factory.newConnection()) {
-            channel = connection.createChannel();
-//            channel.queueDeclare(queue, false, true, false, null);
-            MQMessage message = new MQMessage(MQTopic.LOG, "0", 0, "Connected");
-            channel.basicPublish("", queue, null, message.toString().getBytes());
-            System.out.println(" [x] Sent '" + message + "'");
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        init = true;
-
+        this.jobId = JobID.get();
+        return this.server != null;
     }
 
     private void initServer() {
@@ -113,7 +99,6 @@ public class MQLogPublishHandler extends Handler {
 
     public void setServers(final String servers) {
         this.server = servers;
-        initChannel();
     }
 
 }
