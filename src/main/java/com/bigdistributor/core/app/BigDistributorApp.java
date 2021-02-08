@@ -18,4 +18,6 @@ public @interface BigDistributorApp {
 
     ApplicationMode mode();
 
+    String task() default "";
+
 }

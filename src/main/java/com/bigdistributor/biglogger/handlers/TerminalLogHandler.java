@@ -15,7 +15,7 @@ public class TerminalLogHandler extends Handler {
         System.out.println("Terminal Log Handler initiated..");
     }
 
-    private static final Formatter defaultFormatter = new Formatter() {
+    protected static final Formatter defaultFormatter = new Formatter() {
         private static final String format = "%1$s [%2$tF %2$tT] [%3$-7s] %4$s : %5$s";
 
         @Override

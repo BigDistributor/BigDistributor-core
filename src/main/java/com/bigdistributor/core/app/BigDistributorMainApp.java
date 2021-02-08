@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 
 public abstract class BigDistributorMainApp implements Serializable {
+
     final Logger logger = Log.getLogger(BigDistributorMainApp.class.getName());
 
     public BigDistributorMainApp() {

@@ -1,6 +1,6 @@
 package com.bigdistributor.core.config;
 
-public class DEFAULT {
+public class CLUSTER_DEFAULT {
 	public static final String USER_PSEUDO = "mzouink";
 
 	public static final String DEFAULT_INPUT_PATH = "/Users/Marwan/Desktop/Task";

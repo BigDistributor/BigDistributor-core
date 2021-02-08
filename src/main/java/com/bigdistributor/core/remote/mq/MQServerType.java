@@ -1,7 +1,7 @@
 package com.bigdistributor.core.remote.mq;
 
 public enum MQServerType {
-    Kafka("Kafka"), RabbitMQ("RabbitMq");
+    Kafka("Kafka"), RabbitMQ("RabbitMq"), SNS("SNS");
 
     private final String key;
 

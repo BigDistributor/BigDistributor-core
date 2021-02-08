@@ -2,7 +2,7 @@ package com.bigdistributor.biglogger.adapters;
 
 import com.bigdistributor.biglogger.generic.LogHandler;
 import com.bigdistributor.biglogger.generic.LogReceiver;
-import com.bigdistributor.biglogger.handlers.MQLogPublishHandler;
+import com.bigdistributor.biglogger.handlers.mq.rabbitmq.MQLogPublishHandler;
 import com.bigdistributor.biglogger.handlers.TerminalLogHandler;
 import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.core.config.ConfigManager;
@@ -73,6 +73,10 @@ public class LoggerManager {
     public static void addRemoteLogger(JobParams params) {
         Handler handler = new MQLogPublishHandler(params.getServer(), params.getQueue());
         handler.setLevel(Level.ALL);
+        Log.getRoot().addHandler(handler);
+    }
+
+    public static void addHandler(Handler handler){
         Log.getRoot().addHandler(handler);
     }
 

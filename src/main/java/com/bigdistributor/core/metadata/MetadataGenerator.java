@@ -43,7 +43,10 @@ public class MetadataGenerator {
         }
         GsonIO.toJson(md, f);
         reset();
+    }
 
+    public Metadata getMetadata() {
+        return md;
     }
 
     private void reset() {

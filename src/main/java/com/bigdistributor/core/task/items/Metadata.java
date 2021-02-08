@@ -2,7 +2,6 @@ package com.bigdistributor.core.task.items;
 
 import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
 import com.bigdistributor.io.GsonIO;
-import net.imglib2.Interval;
 import net.preibisch.mvrecon.fiji.spimdata.boundingbox.BoundingBox;
 
 import java.io.IOException;
@@ -12,6 +11,7 @@ public class Metadata {
     private Integer totalBlocks;
     private BoundingBox bb;
     private long[] blocksize;
+
     private List<BasicBlockInfo> blocksInfo;
 
 
@@ -29,7 +29,7 @@ public class Metadata {
         this.blocksInfo = blocksInfo;
     }
 
-    public Interval getBb() {
+    public BoundingBox getBb() {
         return bb;
     }
 

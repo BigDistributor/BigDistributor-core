@@ -1,4 +1,4 @@
-package com.bigdistributor.biglogger.handlers;
+package com.bigdistributor.biglogger.handlers.mq.rabbitmq;
 
 import com.bigdistributor.biglogger.adapters.Log;
 import com.bigdistributor.biglogger.generic.LogHandler;

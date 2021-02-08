@@ -4,7 +4,7 @@ import com.bigdistributor.core.remote.mq.MQServerType;
 
 public enum PropertiesKeys {
     Version("config.version", 1.0),
-    MQType("mq.server.type", MQServerType.RabbitMQ),
+    MQType("mq.server.type", MQServerType.SNS),
     MQServer("mq.server.host", "ec2-18-184-134-47.eu-central-1.compute.amazonaws.com"),
     MQQueue("mq.server.queue", "bigdistributor"),
     MQServerPort("mq.server.port", 9092);
