@@ -2,6 +2,8 @@ package com.bigdistributor.helpers;
 
 public class TASK_DEFAULT {
 
+    public static String[] TASKS = new String[]{"fusion"};
+
 //    Compile
     public static final String dependenciesProjects ="/Users/Marwan/Desktop/BigDistributer/all/BigDistributor-core," +
         "/Users/Marwan/Desktop/BigDistributer/BigDistributor_AWS";
