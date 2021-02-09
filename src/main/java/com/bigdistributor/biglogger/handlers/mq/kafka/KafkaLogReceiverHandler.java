@@ -20,8 +20,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
-//TODO fix this and change to MQ receiver that communicate with MQLogReceiveDispatchManager
-// Communicate with MQLogReceiveDispatchManager
 @LogHandler(format = "Kafka", type = LogMode.Advance, modes = {ApplicationMode.DistributionMaster, ApplicationMode.DistributionMasterFiji})
 public class KafkaLogReceiverHandler implements LogReceiver {
 

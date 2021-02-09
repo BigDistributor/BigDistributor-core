@@ -65,5 +65,8 @@ public class SerializableParams<T extends SerializableParams> implements Seriali
     public SerializableParams fromJson(File file) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
         return getGson().fromJson(new FileReader(file), type.getClass());
     }
+    public SerializableParams fromJsonString(String json) throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+        return getGson().fromJson(json, type.getClass());
+    }
 
 }

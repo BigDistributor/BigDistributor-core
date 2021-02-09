@@ -22,7 +22,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-//TODO change to MQ
 @LogHandler(format = "Kafka", type = LogMode.Advance, modes = {ApplicationMode.ExecutionNode})
 public class KafkaLogPublishHandler extends Handler {
     private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());

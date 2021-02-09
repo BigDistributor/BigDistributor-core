@@ -3,6 +3,7 @@ package com.bigdistributor.core.remote.mq;
 import com.bigdistributor.biglogger.adapters.Log;
 import com.bigdistributor.core.remote.mq.entities.MQMessage;
 import com.bigdistributor.core.remote.mq.entities.RemoteLogListener;
+import com.bigdistributor.core.task.JobID;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -15,8 +16,10 @@ public class MQLogReceiveDispatchManager {
 
     public static void addLog(String log) {
         MQMessage message = MQMessage.fromString(log);
-        msgs.add(message);
-        notifyListeners(message);
+        if (message.getJobId() == JobID.get()) {
+            msgs.add(message);
+            notifyListeners(message);
+        }
     }
 
     private static void notifyListeners(MQMessage message) {

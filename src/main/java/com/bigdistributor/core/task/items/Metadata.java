@@ -2,6 +2,7 @@ package com.bigdistributor.core.task.items;
 
 import com.bigdistributor.core.blockmanagement.blockinfo.BasicBlockInfo;
 import com.bigdistributor.io.GsonIO;
+import com.google.gson.Gson;
 import net.preibisch.mvrecon.fiji.spimdata.boundingbox.BoundingBox;
 
 import java.io.IOException;
@@ -62,4 +63,9 @@ public class Metadata {
     public static Metadata fromJson(String path) throws Exception {
         return GsonIO.fromJson(path, Metadata.class);
     }
+
+    public static Metadata fromJsonString(String st) throws Exception {
+        return new Gson().fromJson(st, Metadata.class);
+    }
+
 }
