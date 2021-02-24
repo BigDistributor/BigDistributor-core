@@ -6,11 +6,9 @@ import com.bigdistributor.core.app.BigDistributorApp;
 import com.bigdistributor.core.app.BigDistributorMainApp;
 import org.junit.Test;
 
-import java.util.logging.Logger;
-
 @BigDistributorApp(mode = ApplicationMode.ExecutionNode)
 public class KafkaLogTest extends BigDistributorMainApp {
-    final Logger logger = Log.getLogger(BigDistributorMainApp.class.getName());
+    final Log logger = Log.getLogger(BigDistributorMainApp.class.getName());
 
     @Test
     public void checkSendLog(){

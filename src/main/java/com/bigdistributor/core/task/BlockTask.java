@@ -7,4 +7,5 @@ public interface BlockTask<T, D, K> {
 
     RandomAccessibleInterval<T> blockTask(D data, K params, Interval bb);
 
+
 }

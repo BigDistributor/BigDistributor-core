@@ -6,11 +6,10 @@ import java.lang.invoke.MethodHandles;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class JobID {
 
-    private static final Logger logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
 
     private static JobID instance;
 
@@ -53,7 +52,7 @@ public class JobID {
 
     public static String get() {
         if (instance == null) {
-            logger.warning("No JobID found, New one is created!");
+            logger.error("No JobID found, New one is created!");
             return createNew();
         } else {
             return instance.getId();

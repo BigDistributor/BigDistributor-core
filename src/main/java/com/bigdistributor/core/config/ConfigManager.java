@@ -3,12 +3,11 @@ package com.bigdistributor.core.config;
 import com.bigdistributor.biglogger.adapters.Log;
 
 import java.io.*;
-import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 public class ConfigManager {
 
-    private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static final Log logger = Log.getLogger(ConfigManager.class.getName());
     private final static String CONFIG_FILE = "bigdistributor.properties";
     private static Map<PropertiesKeys, Object> config;
 
@@ -23,7 +22,7 @@ public class ConfigManager {
                 logger.info("Create Config..");
                 Properties prop = createConfig();
                 config = formatProperties(prop);
-                saveConfig(prop, f);
+//                saveConfig(prop, f);
             }
         } catch (IOException | NullPointerException e) {
             logger.error(e.toString());

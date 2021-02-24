@@ -4,12 +4,11 @@ import com.bigdistributor.biglogger.adapters.Log;
 import org.apache.maven.shared.invoker.*;
 
 import java.io.File;
-import java.lang.invoke.MethodHandles;
 import java.util.Collections;
 import java.util.List;
 
 public class MavenCompiler {
-    private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static final Log logger = Log.getLogger(MavenCompiler.class.getName());
 
     private final String outputPath;
     private final List<String> dependencies;
@@ -27,6 +26,9 @@ public class MavenCompiler {
             outputFile.mkdirs();
         }
         Invoker invoker = getInvoker(outputFile);
+
+        invoker.setOutputHandler(s -> logger.info(s));
+        invoker.setErrorHandler(s -> logger.error(s));
         for (String dep : dependencies) {
 
             File pomFile = (new File(dep).isDirectory()) ? new File(dep, "pom.xml") : new File(dep);
@@ -50,7 +52,7 @@ public class MavenCompiler {
         invoker.setLocalRepositoryDirectory(outputFolder);
 
         String mavenHome = System.getenv("M3_HOME");
-        if(mavenHome==null){
+        if (mavenHome == null) {
             logger.error("$M3_HOME is null, init it before");
             throw new MavenInvocationException("$M3_HOME is null, init it before");
         }

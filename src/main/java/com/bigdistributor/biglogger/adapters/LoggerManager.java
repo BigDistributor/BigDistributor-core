@@ -2,8 +2,8 @@ package com.bigdistributor.biglogger.adapters;
 
 import com.bigdistributor.biglogger.generic.LogHandler;
 import com.bigdistributor.biglogger.generic.LogReceiver;
-import com.bigdistributor.biglogger.handlers.mq.rabbitmq.MQLogPublishHandler;
 import com.bigdistributor.biglogger.handlers.TerminalLogHandler;
+import com.bigdistributor.biglogger.handlers.mq.rabbitmq.MQLogPublishHandler;
 import com.bigdistributor.core.app.ApplicationMode;
 import com.bigdistributor.core.config.ConfigManager;
 import com.bigdistributor.core.config.PropertiesKeys;
@@ -24,16 +24,17 @@ import java.util.logging.LogManager;
 public class LoggerManager {
 
     private static final Log logger = Log.getLogger(MethodHandles.lookup().lookupClass().getSimpleName());
+    private static ApplicationMode applicationMode;
 
-    public static void initLoggers(ApplicationMode type) throws InvalidApplicationModeException {
-        if (type == null) {
+    public static void initLoggers() throws InvalidApplicationModeException {
+        if (applicationMode == null) {
             throw new InvalidApplicationModeException("Can't be null");
         }
-        List<Class<?>> loggers = getLoggers(type);
+        List<Class<?>> loggers = getLoggers(applicationMode);
 
-        logger.info("Initiating Logger for application mode: " + type + " - ");
-//
-        loggers.stream().forEach(c -> {
+        logger.info("Initiating Logger for application mode: " + applicationMode );
+
+        loggers.forEach(c -> {
             try {
                 logger.info("Setting " + c.getSimpleName());
                 LogHandler annotation = c.getAnnotation(LogHandler.class);
@@ -47,11 +48,11 @@ public class LoggerManager {
                     }
                 }
                 if (Handler.class.isAssignableFrom(c)) {
-                    Handler handler = Handler.class.cast(c.newInstance());
-                    handler.setLevel(Level.ALL);
+                    Handler handler = (Handler) c.newInstance();
+                    handler.setLevel(Level.INFO);
                     Log.getRoot().addHandler(handler);
                 } else if (LogReceiver.class.isAssignableFrom(c)) {
-                    LogReceiver receiver = LogReceiver.class.cast(c.newInstance());
+                    LogReceiver receiver = (LogReceiver) c.newInstance();
                     receiver.start();
                 }
             } catch (IllegalAccessException | InstantiationException e) {
@@ -62,8 +63,8 @@ public class LoggerManager {
 
     private static List<Class<?>> getLoggers(ApplicationMode type) {
         List<Class<?>> loggers = new ArrayList<>();
-        final Set<Class<?>> indexableClasses = new Reflections("com.bigdistributor").getTypesAnnotatedWith(LogHandler.class);
-        indexableClasses.forEach(c -> {
+        final Set<Class<?>> indelibleClasses = new Reflections("com.bigdistributor").getTypesAnnotatedWith(LogHandler.class);
+        indelibleClasses.forEach(c -> {
             if (Arrays.asList(c.getAnnotation(LogHandler.class).modes()).contains(type))
                 loggers.add(c);
         });
@@ -72,18 +73,26 @@ public class LoggerManager {
 
     public static void addRemoteLogger(JobParams params) {
         Handler handler = new MQLogPublishHandler(params.getServer(), params.getQueue());
-        handler.setLevel(Level.ALL);
+        handler.setLevel(Level.INFO);
         Log.getRoot().addHandler(handler);
     }
 
-    public static void addHandler(Handler handler){
+    public static void addHandler(Handler handler) {
         Log.getRoot().addHandler(handler);
     }
 
     public static void initTerminal() {
         LogManager.getLogManager().reset();
         Handler handler = new TerminalLogHandler();
-        handler.setLevel(Level.ALL);
+        handler.setLevel(Level.INFO);
         Log.getRoot().addHandler(handler);
+    }
+
+    public static void setApplicationMode(ApplicationMode applicationMode) {
+        LoggerManager.applicationMode = applicationMode;
+    }
+
+    public static ApplicationMode getApplicationMode() {
+        return applicationMode;
     }
 }
