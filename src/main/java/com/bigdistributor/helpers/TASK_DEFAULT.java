@@ -4,9 +4,11 @@ public class TASK_DEFAULT {
 
     public static String[] TASKS = new String[]{"fusion"};
 
-//    Compile
-    public static final String dependenciesProjects ="/Users/Marwan/Desktop/BigDistributer/all/BigDistributor-core," +
-        "/Users/Marwan/Desktop/BigDistributer/BigDistributor_AWS";
+    //    Compile
+    public static final String dependenciesProjects =
+            "/Users/Marwan/Desktop/BigDistributer/all/BigDistributor-core," +
+                    "/Users/Marwan/Desktop/BigDistributer/AWS_DataExchange," +
+                    "/Users/Marwan/Desktop/BigDistributer/BigDistributor_AWS";
     public static final String mainProject = "/Users/Marwan/Desktop/BigDistributer/BigDistributor_ImplementedTasks/pom.xml";
     public static final String outputMaven = "/Users/Marwan/BigDistributorMaven";
 

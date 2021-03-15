@@ -58,13 +58,11 @@
         </dependency>
 
         <!--        Headless        -->
-        <!-- https://mvnrepository.com/artifact/info.picocli/picocli -->
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.5.2</version>
+            <version>4.6.1</version>
         </dependency>
-
         <!--        unit test -->
         <dependency>
             <groupId>junit</groupId>

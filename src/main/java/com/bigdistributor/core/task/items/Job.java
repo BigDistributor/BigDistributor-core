@@ -1,7 +1,6 @@
 package com.bigdistributor.core.task.items;
 
 import com.bigdistributor.core.task.JobID;
-import com.google.common.io.Files;
 
 import java.io.File;
 
@@ -60,9 +59,7 @@ public class Job extends Object {
     }
 
     private static File createTempDir() {
-        File tempDir = Files.createTempDir();
-        System.out.println("tmp Dir: " + tempDir.getAbsolutePath());
-        return tempDir;
+        return TmpDir.get();
     }
 
     public String getId() {

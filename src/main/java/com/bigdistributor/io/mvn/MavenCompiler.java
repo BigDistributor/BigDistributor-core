@@ -30,7 +30,6 @@ public class MavenCompiler {
         invoker.setOutputHandler(s -> logger.info(s));
         invoker.setErrorHandler(s -> logger.error(s));
         for (String dep : dependencies) {
-
             File pomFile = (new File(dep).isDirectory()) ? new File(dep, "pom.xml") : new File(dep);
             compile(invoker, pomFile);
         }

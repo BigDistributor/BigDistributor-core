@@ -5,8 +5,6 @@ import com.bigdistributor.biglogger.adapters.Log;
 import com.bigdistributor.biglogger.adapters.LoggerManager;
 import com.bigdistributor.core.config.ConfigManager;
 
-import java.io.Serializable;
-
 /**
  * Class {@code BigDistributorMainApp} is the main root of BigDistributor.
  * Any Main app will need to extends from this class
@@ -18,7 +16,7 @@ import java.io.Serializable;
  * @since V0.1
  */
 
-public abstract class BigDistributorMainApp implements Serializable {
+public abstract class BigDistributorMainApp {
 
     final Log logger = Log.getLogger(BigDistributorMainApp.class.getName());
 
@@ -28,7 +26,5 @@ public abstract class BigDistributorMainApp implements Serializable {
         BigDistributorApp dist = this.getClass().getAnnotation(BigDistributorApp.class);
         LoggerManager.setApplicationMode(dist.mode());
         logger.info("Main App: " + this.getClass() + " Type: " + dist.mode());
-
-
     }
 }
