@@ -6,18 +6,25 @@ import com.bigdistributor.core.blockmanagement.blockinfo.BlockInfoGenerator;
 import com.bigdistributor.core.spim.SpimDataLoader;
 import com.bigdistributor.core.task.items.Metadata;
 import com.bigdistributor.io.GsonIO;
+import net.preibisch.mvrecon.fiji.spimdata.SpimData2;
 import net.preibisch.mvrecon.fiji.spimdata.boundingbox.BoundingBox;
 
 import java.io.File;
 
 public class MetadataGenerator {
 
-    private final SpimDataLoader loader;
+//    private final SpimDataLoader loader;
+    private SpimData2 spimdata;
     private BoundingBox bb;
     private Metadata md;
 
+    @Deprecated
     public MetadataGenerator(SpimDataLoader loader) {
-        this.loader = loader;
+        this.spimdata = loader.getSpimdata();
+    }
+
+    public MetadataGenerator(SpimData2 spimdata) {
+        this.spimdata = spimdata;
     }
 
     public void setBb(BoundingBox bb) {
@@ -26,7 +33,7 @@ public class MetadataGenerator {
 
     public MetadataGenerator generate() {
         if (bb == null) {
-            BoundingBoxManager manager = new BoundingBoxManager(loader.getSpimdata());
+            BoundingBoxManager manager = new BoundingBoxManager(spimdata);
             bb = manager.getMax();
         }
 
